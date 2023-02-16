@@ -1,0 +1,57 @@
+<div class="authBox">
+	<form [formGroup]="register" (ngSubmit)="onSubmit()">
+		<h1>Register</h1>
+
+		<app-form-field>
+			<label class="custom-label" for="email">Email</label>
+			<input
+				id="email"
+				class="custom-input"
+				type="text"
+				formControlName="email"
+				required
+			/>
+			<span *ngIf="submitted" class="hint">
+				Please type in a correct email
+			</span>
+		</app-form-field>
+
+		<app-form-field formGroupName="passwords">
+			<label class="custom-label" for="password">Password</label>
+			<input
+				id="password"
+				class="custom-input"
+				type="password"
+				formControlName="password"
+				required
+				autocomplete="off"
+			/>
+			<span *ngIf="submitted" class="hint">
+				Password must include at least 8 characters, a number and
+				uppercase letter
+			</span>
+		</app-form-field>
+
+		<app-form-field formGroupName="passwords">
+			<label class="custom-label" for="retype">Retype Password</label>
+			<input
+				id="retype"
+				class="custom-input"
+				type="password"
+				formControlName="retypePassword"
+				required
+				autocomplete="off"
+			/>
+			<span *ngIf="submitted" class="hint">
+				The passwords don't match
+			</span>
+		</app-form-field>
+
+		<div class="w100 flex ac jsb">
+			<button button-sec routerLink="/login">
+				Already have an account?
+			</button>
+			<button button-prim type="submit">Register</button>
+		</div>
+	</form>
+</div>

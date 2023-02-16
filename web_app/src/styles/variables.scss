@@ -1,0 +1,64 @@
+$primary: #d54942;
+$primaryTrans: transparentize($primary, 0.7);
+$primaryLight: #ff5f5e;
+$secondary: #2a276d;
+
+$disabledInput: #f9f9f9;
+$bgLight: #f9fafc;
+$bgLight2: #f0f2f5;
+$bgMedium: #dfdfdf;
+
+$button-background-neutral: #eeeeee;
+
+$grey-light: #eeeeee;
+
+$textDark: #272621;
+$textLight: #b4b4b5;
+$transparentBg: rgba(227, 227, 227, 0.205);
+$transparentBg2: rgba(227, 227, 227, 0.305);
+$transparentBgDark: rgba(131, 131, 131, 0.205);
+
+$info: #dffb5e;
+$success: #58e02f;
+$error: #f15d5c;
+
+$borderRadius: 5px;
+$borderColorLight: #efefef;
+$borderColor: #70707036;
+
+$shadow: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.2));
+$transition: all 300ms ease-in-out;
+$transition-color: color 300ms ease-in-out;
+$blur: blur(30px);
+
+// Breakpoints
+$sm: 576px;
+$md: 750px;
+$lg: 1024px;
+$xl: 1300px;
+
+// Container widths
+$w-sm: 100%;
+$w-md: 750px;
+$w-lg: 970px;
+$w-xl: 1300px;
+
+$default-margin: 16px;
+$margin-mobile: 12px;
+$margin-desktop: 16px;
+
+// Nav height
+$navHeight: 84px;
+$footerHeight: 60px;
+$navHeightMobile: 64px;
+$footerHeightMobile: 30px;
+
+// Mobile navigation aka toolbar
+$toolbarHeight: 72px;
+
+
+$link: #292a6d;
+
+// Main height (without header)
+$height100WithoutHeader: calc(100vh - 84px);
+$height100MobileWithoutHeader: calc(100vh - 64px - 72px);

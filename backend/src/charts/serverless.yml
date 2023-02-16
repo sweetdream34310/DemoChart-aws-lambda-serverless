@@ -1,0 +1,36 @@
+org: juliprop
+app: democharts
+service: backend-charts
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # gets all chartlists
+    getCharts:
+        handler: srcGetCharts.handler
+        events:
+            - http:
+                  path: getCharts
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: charts
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

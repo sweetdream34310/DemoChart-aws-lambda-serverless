@@ -1,0 +1,31 @@
+<h2 modal-title class="modal-title">{{ inputData.title }}</h2>
+
+<div modal-content>
+	<div *ngFor="let dropdownItem of dropdownOptions; let i = index" class="checkbox-container">
+		<label class="checkbox-description pointer">{{ dropdownItem }}
+			<input type="checkbox" class="pointer checkbox" (click)="toggleOption(dropdownItem)" id="chk{{ i }}"/>
+			<span class="checkmark"></span>
+		</label>
+	</div>
+
+	<input
+		*ngIf="inputData.customInput"
+		[type]="inputData.customInput.type"
+		[placeholder]="inputData.customInput.placeholder"
+		[(ngModel)]="inputData.customInput.value"
+		class="custom-input"
+	/>
+
+	<textarea [(ngModel)]="message" class="feedback-textarea" placeholder="Tell us more...">
+
+	</textarea>
+
+	<div *ngIf="showValidationHint" class="validation-hint">Please give us more information.</div>
+
+</div>
+
+
+<div modal-actions>
+	<button button-kathrin (click)="submitFeedback()" [disabled]="!isValid">send</button>
+</div>
+

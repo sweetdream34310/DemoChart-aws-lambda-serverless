@@ -1,0 +1,51 @@
+<div class="authBox container main-container full-height">
+	<div class="image-container">
+		<img src="../../../assets/bubble-background.png" />
+	</div>
+	<form [formGroup]="signIn" (ngSubmit)="onSubmit()">
+		<div class="form-wrapper">
+
+			<h1>Login</h1>
+
+			<app-form-field class="login-page-form">
+				<label class="custom-label" for="email">Email</label>
+				<input
+					id="email"
+					class="custom-input"
+					type="text"
+					formControlName="email"
+					required
+				/>
+			</app-form-field>
+
+			<app-form-field class="login-page-form">
+				<label class="custom-label" for="password">Password</label>
+				<input
+					id="password"
+					class="custom-input"
+					type="password"
+					formControlName="password"
+					required
+				/>
+			</app-form-field>
+
+			<div>
+				<button button-accent type="submit" [loading]="loading">Login</button>
+
+				<button *ngIf="showResendEmail" type="button" class="resendButton" button-accent (click)="resendEmail()">Resend E-Mail</button>
+			</div>
+			<div style="margin-top: 24px">
+				<a href="https://democharts.org/apply/" class="link">Signup</a>
+				<a routerLink="/reset-password" class="link">Forgot password?</a>
+			</div>
+
+			<div *ngIf="messageCode === 'not_approved_yet'" style="margin-top: 16px">
+				You have not been approved by an admin yet. Once approved, we will contact you at your e-mail address.
+			</div>
+
+
+		</div>
+
+	</form>
+
+</div>

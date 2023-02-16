@@ -1,0 +1,14 @@
+<app-mydemo-box>
+
+	<div class="upload-demo-container"
+			 [routerLink]="'/upload'">
+
+
+		<img src="../../../assets/upload-animation.gif" class="upload" width="170px" />
+
+		<h3 class="upload-title">Upload new Demo</h3>
+
+		<div class="credits-left">{{ credits$ | async }} {{ (credits$ | async) === 1 ? 'Credit' : 'Credits'}} Available</div>
+	</div>
+
+</app-mydemo-box>

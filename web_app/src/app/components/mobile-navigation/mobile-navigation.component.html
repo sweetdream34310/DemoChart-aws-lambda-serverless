@@ -1,0 +1,77 @@
+<div class="mobile-navigation"
+		 *ngIf="(isExpert | async) || (isArtist | async)">
+
+	<a class="mobile-nav-item"
+		 *ngIf="isExpert | async"
+		 [routerLink]="'/charts'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-star-outlined></app-icon-star-outlined>
+		</div>
+		<div *ngIf="showText">Chartlist</div>
+	</a>
+
+
+	<a class="mobile-nav-item"
+		 [routerLink]="'/messages'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-chat></app-icon-chat>
+		</div>
+		<div *ngIf="showText">Messages</div>
+	</a>
+
+	<a class="mobile-nav-item"
+		 *ngIf="isExpert | async"
+		 [routerLink]="'/demoplayer'"
+		 routerLinkActive="active">
+<!--		<div class="demoplayer-menu">-->
+			<div class="icon-wrapper">
+				<app-icon-next></app-icon-next>
+			</div>
+<!--		</div>-->
+		<div *ngIf="showText">Demoplayer</div>
+	</a>
+
+	<a class="mobile-nav-item"
+		 *ngIf="isExpert | async"
+		 [routerLink]="'/favorites'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-heart></app-icon-heart>
+		</div>
+		<div *ngIf="showText">Saved</div>
+	</a>
+
+
+	<a class="mobile-nav-item"
+		 *ngIf="isArtist | async"
+		 [routerLink]="'/upload'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-upload></app-icon-upload>
+		</div>
+		<div *ngIf="showText">Upload demo</div>
+	</a>
+
+	<a class="mobile-nav-item"
+		 *ngIf="isArtist | async"
+		 [routerLink]="'/mydemos'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-vinyl></app-icon-vinyl>
+		</div>
+		<div *ngIf="showText">My demos</div>
+	</a>
+
+	<a class="mobile-nav-item"
+		 [routerLink]="'/profile'"
+		 routerLinkActive="active">
+		<div class="icon-wrapper">
+			<app-icon-profile></app-icon-profile>
+		</div>
+		<div *ngIf="showText">Profile</div>
+	</a>
+
+
+</div>

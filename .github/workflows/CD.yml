@@ -1,0 +1,35 @@
+name: CI_CD
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'backend/src/**'
+
+jobs:
+  deploy_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: cd backend/; npm ci 
+
+      - name: Get changed files
+        id: getfile
+        run: echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.event.before }} ${{ github.sha }} | xargs)"
+
+      - name: Install serverless
+        run: npm install -g serverless
+
+      - name: Deploy backend
+        env:
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        run: node ./backend/deploy.js ${{ steps.getfile.outputs.files }}
+
+
+

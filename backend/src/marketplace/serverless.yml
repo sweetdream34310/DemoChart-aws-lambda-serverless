@@ -1,0 +1,358 @@
+org: juliprop
+app: democharts
+service: backend-marketplace
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+  getSellers:
+    handler: srcGetSellers.handler
+    events:
+      - http:
+          path: getSellers
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+  getOrders:
+    handler: srcGetOrders.handler
+    events:
+      - http:
+          path: getOrders
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+          
+  getUser:
+    handler: srcGetUser.handler
+    events:
+      - http:
+          path: getUser
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  getGigsPublic:
+    handler: srcGetGigsPublic.handler
+    events:
+      - http:
+          path: getGigsPublic
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+  getGigsAuthorized:
+    handler: srcGetGigsAuthorized.handler
+    events:
+      - http:
+          path: getGigsAuthorized
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  deleteGig:
+    handler: srcDeleteGig.handler
+    events:
+      - http:
+          path: deleteGig
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  deleteOrder:
+    handler: srcDeleteOrder.handler
+    events:
+      - http:
+          path: deleteOrder
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  getGig:
+    handler: srcGetGig.handler
+    timeout: 60
+    events:
+      - http:
+          path: getGig
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+  searchGigs:
+    handler: srcSearchGigs.handler
+    timeout: 60
+    events:
+      - http:
+          path: searchGigs
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+  upsertSeller:
+    handler: srcUpsertSeller.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: upsertSeller
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  applySeller:
+    handler: srcApplySeller.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: applySeller
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+
+  upsertGig:
+    handler: srcUpsertGig.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: upsertGig
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  saveGig:
+    handler: srcSaveGig.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: saveGig
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  getSavedGigs:
+    handler: srcGetSavedGigs.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: getSavedGigs
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  upsertOrder:
+    handler: srcUpsertOrder.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: confirmOrder
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  confirmOrder:
+    handler: srcConfirmOrder.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: confirmOrder
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  placeOrder:
+    handler: srcPlaceOrder.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: placeOrder
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  placeReview:
+    handler: srcPlaceReview.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: placeReview
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+#  readReviewGig:
+#    handler: srcGetReview.handler
+#    layers:
+#      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+#    events:
+#      - http:
+#          path: getReview
+#          method: get
+#          cors: true
+#          integration: lambda
+#          authorizer: ${self:custom.globals.authorizer}
+
+  updateOrderStatus:
+    handler: srcUpdateOrderStatus.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: updateOrderStatus
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+
+  getOrder:
+    handler: srcGetOrder.handler
+    layers:
+      - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - s3:PutObject
+        Resource:
+          - arn:aws:s3:::backend-s3buckets-dev-databucket-mnzmiczicq8f/marketplace/*
+          #- ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+    events:
+      - http:
+          path: getOrder
+          method: post
+          cors: true
+          integration: lambda
+          authorizer: ${self:custom.globals.authorizer}
+
+  getSeller:
+    handler: srcGetSeller.handler
+    events:
+      - http:
+          path: getSeller
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: marketplace
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'
+
+outputs:
+    DataBucketName: backend-s3buckets-dev-databucket-mnzmiczicq8f

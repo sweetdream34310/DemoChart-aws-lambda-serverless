@@ -1,0 +1,18 @@
+<div id="stepper" [style.display]="selected ? 'flex' : 'none'">
+	<div class="menu-container">
+		<div *ngIf="header"  id="header" class="container">
+			<button
+				class="step transition-color pointer"
+				*ngFor="let step of steps; let i = index"
+				[ngClass]="{
+				completed: maxLevel >= i,
+				active: selectedIndex === i
+				 }"
+				(click)="onClick(i)"
+			>
+				{{i}}. {{ step.label }}
+			</button>
+		</div>
+	</div>
+	<ng-container [ngTemplateOutlet]="selected.content"></ng-container>
+</div>

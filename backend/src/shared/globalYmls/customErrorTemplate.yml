@@ -1,0 +1,24 @@
+statusCodes:
+    400:
+        #headers:
+        #    Access-Control-Allow-Origin: '*'
+        pattern: '.*"statusCode":400,.*'
+        template: $input.path("$.errorMessage")
+    501:
+        pattern: '.*"statusCode":501,.*'
+        template: $input.path("$.errorMessage")
+    
+    # 500:
+    #   pattern: '.*'
+    #   template: '{"message": "Internal Server Error"}'
+
+
+
+#          {
+#              "StatusCode": "401",
+#              "SelectionPattern": "[\\s\\S]*\\[401\\][\\s\\S]*",
+#              "ResponseParameters": {
+#                  "method.response.header.Access-Control-Allow-Origin": "'*'"
+#              },
+#              "ResponseTemplates": {}
+#          },

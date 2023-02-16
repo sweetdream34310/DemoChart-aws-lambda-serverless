@@ -1,0 +1,44 @@
+org: juliprop
+app: democharts
+service: backend-feedback
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # gets information about the logged in user
+  postFeedback:
+    handler: srcPostFeedback.handler
+    events:
+      - http:
+          path: submit
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+          authorizer: ${self:custom.globals.authorizer}
+  anonymEmail:
+    handler: srcSendAnonymEmail.handler
+    events:
+      - http:
+          path: anonym
+          method: post
+          cors: true
+          integration: lambda
+          response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: feedback
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

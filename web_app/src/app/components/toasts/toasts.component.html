@@ -1,0 +1,9 @@
+<aside
+	*ngFor="let toast of toasts$ | async"
+	class="flex ac jsb"
+	[class]="toast.style"
+	[@toastState]="'fadeIn'"
+>
+	{{ toast.content }}
+	<!-- <button (click)="dismss(toast)">remove</button> -->
+</aside>

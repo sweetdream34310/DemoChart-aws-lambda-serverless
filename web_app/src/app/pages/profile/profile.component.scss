@@ -1,0 +1,200 @@
+@import 'variables';
+@import 'colors';
+@import 'responsive';
+@import '~rfs/scss';
+
+:host {
+	flex: 1;
+}
+
+#headerImage {
+	height: 450px;
+	width: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
+
+#headRow {
+	margin-bottom: 0rem;
+	margin-top: -8rem;
+	position: relative;
+
+	.name {
+		text-transform: capitalize;
+		text-align: center;
+	}
+
+	#bio {
+		font-size: 1.125rem;
+		text-align: center;
+	}
+
+	#profilePic {
+		width: 11rem;
+		height: 11rem;
+		border-radius: 100%;
+		border: 0.4rem solid white;
+		background-color: white;
+		margin-bottom: 1rem;
+	}
+
+	.sendMessage {
+		max-width: unset;
+		display: flex;
+		width: 100%;
+		justify-content: flex-end;
+		margin-top: -4rem;
+		margin-bottom: 2rem;
+
+		@include respondTo(mobile) {
+			justify-items: center;
+		}
+
+		button {
+			font-size: 1.25rem;
+
+			.chat {
+				margin-right: 0.5rem;
+			}
+
+			&.favorites {
+				margin-left: 8px;
+			}
+		}
+
+		button ~ button {
+			margin-left: 8px;
+		}
+	}
+
+	@media (min-width: $md) {
+		div {
+			max-width: 50%;
+		}
+	}
+}
+
+.greyRect {
+	background-color: $background-item;
+	border-radius: $borderRadius;
+	padding: 2rem;
+}
+
+.greyRect:hover {
+	background-color: $background-item-hover;
+}
+
+#bodyRow {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin-top: 4rem;
+
+	@media (min-width: $md) {
+		flex-direction: row;
+	}
+
+	> div {
+		flex: 1;
+		margin-bottom: 2rem;
+		padding: 0 1rem;
+
+		&:nth-of-type(2) {
+			flex: 2;
+		}
+	}
+
+	h2 {
+		text-transform: capitalize;
+	}
+
+	#aboutHeader {
+		margin-left: 1rem;
+	}
+
+	.categories {
+		.category {
+			margin-bottom: 1rem;
+			padding: 1rem;
+
+			&.hasLink {
+				cursor: pointer;
+
+				&:hover {
+					.title,
+					.description {
+						text-decoration: underline;
+					}
+				}
+			}
+
+			.title {
+				margin-bottom: 0.3rem;
+				font-size: 1.125rem;
+			}
+
+			.description {
+				margin-bottom: 0.3rem;
+			}
+		}
+	}
+}
+
+
+.heart {
+	cursor: pointer;
+
+	&:hover {
+		color: $primary;
+	}
+
+	&.active {
+		color: $primary;
+	}
+}
+
+
+.edit-profile-button {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+@media (max-width: $lg) {
+
+	#headRow {
+		.sendMessage {
+			text-align: center;
+			display: inline-block;
+			margin-top: 0;
+		}
+	}
+}
+
+@media (max-width: $md) {
+	#headerImage {
+		width: 100%;
+		height: 220px;
+	}
+
+	#headRow {
+		margin-top: -4rem;
+	}
+
+	.edit-profile-button {
+		position: static;
+	}
+}
+
+.button-cta {
+	@include respondTo(mobile) {
+		display: inline-block;
+		margin: 4px auto 0 auto !important;
+	}
+}
+.button-cta ~ .button-cta {
+	@include respondTo(mobile) {
+	}
+}
+

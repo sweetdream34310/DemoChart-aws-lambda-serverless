@@ -1,0 +1,21 @@
+<div class="header full-width section-heading">
+	<div class="container">
+		<h2 class="title">Saved Artists</h2>
+		<div class="subtitle">Checkout your favorite Artists</div>
+	</div>
+</div>
+
+<app-spinner *ngIf="!(loaded | async)" class="app-spinner"></app-spinner>
+<div *ngIf="((loaded | async) && (followedUsers$ | async)?.length>0)" class="container">
+	<div class="profile-container">
+		<app-followed-user *ngFor="let followed of followedUsers$ | async"
+											 [followed]="followed"
+											 class="profile"
+		></app-followed-user>
+	</div>
+</div>
+<div *ngIf="((loaded | async) && (followedUsers$ | async)?.length==0)" class="container no-artists-yet">
+	You have not saved any artists yet.
+</div>
+
+

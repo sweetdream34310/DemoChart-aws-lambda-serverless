@@ -1,0 +1,11 @@
+@import 'variables';
+@import "colors";
+
+:host {
+	width: 100%;
+	background-color: $background-default;
+	padding: 3rem;
+	filter: $shadow;
+	border-radius: 15px;
+	box-sizing: border-box;
+}

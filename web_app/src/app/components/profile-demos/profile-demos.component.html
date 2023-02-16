@@ -1,0 +1,17 @@
+
+<app-profile-song
+	*ngFor="let demo of demos"
+	[song]="demo"
+	[isHovered]="currentDemoHover === demo.uid"
+	[isPlaying]="playingUid === demo.uid"
+	(blurItem)="blurItem(demo.uid)"
+	(hoverItem)="hoverItem(demo.uid)"
+	(playToggle)="playToggle($event)"
+>
+</app-profile-song>
+
+
+<div *ngIf="demos.length === 0" class="greyRect">
+	<div *ngIf="(profile.uid | isMe | async)">You haven't uploaded any songs yet.</div>
+	<div *ngIf="!(profile.uid | isMe | async)">No Demos available.</div>
+</div>

@@ -1,0 +1,55 @@
+@import "variables";
+@import "responsive";
+@import "colors";
+@import '~rfs/scss';
+
+.info-wrapper {
+	width: 500px;
+	height: 370px;
+
+	@include respondTo(mobile) {
+		width: 100%;
+	}
+}
+
+.info-container {
+	position: relative;
+
+	@include respondTo(mobile) {
+		max-width: 500px;
+		width: 100%;
+	}
+}
+
+.bubble {
+	position: relative;
+	z-index: 10;
+	border-radius: $borderRadius;
+	background: $background-item-2;
+	padding: 32px;
+	text-align: center;
+	@include font-size(1.5rem);
+
+	.button-container {
+		margin-top: 16px;
+		display: flex;
+		justify-content: center;
+		justify-items: center;
+	}
+}
+
+.shark {
+	position: absolute;
+	right: 0;
+	bottom: -190px;
+}
+
+.shark-arrow {
+	position: absolute;
+	z-index: 12;
+	right: 150px;
+	bottom: -50px;
+	height: 50px;
+	fill: $background-item-2;
+}
+

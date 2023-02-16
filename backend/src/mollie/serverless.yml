@@ -1,0 +1,78 @@
+org: juliprop
+app: democharts
+service: backend-mollie
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # buy song with exisitng credits
+    buyWithCredits:
+        handler: srcBuyWithCredits.handler
+        events:
+            - http:
+                  path: buyWithCredits
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/BuyWithCredits.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # fill up account with credits
+    buyCredits:
+        handler: srcBuyCredits.handler
+        events:
+            - http:
+                  path: buyCredits
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/BuyCredits.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    #handel payment webhook
+    webhook:
+        handler: srcWebhook.handler
+        iamRoleStatements:
+            - Effect: 'Allow'
+              Action:
+                  - ses:SendRawEmail
+              Resource:
+                  - '*'
+            - Effect: 'Allow'
+              Action:
+                  - s3:PutObject
+              Resource:
+                  - '*'
+        events:
+            - http:
+                  path: webhook
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: mollie
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

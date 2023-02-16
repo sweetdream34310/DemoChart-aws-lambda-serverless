@@ -1,0 +1,68 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "UpdateProfile",
+	"type": "object",
+	"properties": {
+		"firstName": {
+			"type": "string"
+		},
+		"lastName": {
+			"type": "string"
+		},
+		"artistName": {
+			"type": "string"
+		},
+		"jobTitle": {
+			"type": "string"
+		},
+		"bio": {
+			"type": "string"
+		},
+		"countryID": {
+			"type": "number"
+		},
+		"profileListItems": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"header": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"dateString": {
+						"type": ["string", "null"]
+					},
+					"link": {
+						"type": ["string", "null"]
+					}
+				},
+				"required": ["title", "header", "description"]
+			}
+		},
+		"socialMedias": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"platform": {
+						"type": "string"
+					},
+					"link": {
+						"type": "string"
+					},
+					"linkText": {
+						"type": "string"
+					}
+				},
+				"required": ["platform", "link", "linkText"]
+			}
+		}
+	},
+	"required": ["firstName", "lastName", "countryID", "profileListItems", "socialMedias"]
+}

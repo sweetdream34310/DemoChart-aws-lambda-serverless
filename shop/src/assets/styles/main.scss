@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: 'Josefin Sans', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'sans-serif';
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.skeleton {
+  opacity: 0.7;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(63, 0%, 14%);
+  }
+
+  100% {
+    background-color: hsl(63, 0%, 25%);
+  }
+}
+
+$demochartsRed: #E73939;
+$box: #111111;

@@ -1,0 +1,36 @@
+{
+  "name": "democharts-shop",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "build-prod": "vite build --mode production",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@gtm-support/vue-gtm": "^1.6.0",
+    "@vitejs/plugin-vue": "^2.0.0",
+    "axios": "^0.25.0",
+    "esbuild": "^0.14.49",
+    "global": "^4.4.0",
+    "install": "^0.13.0",
+    "lottie-web-vue": "^2.0.6",
+    "mitt": "^3.0.0",
+    "vite": "^2.7.2",
+    "vue": "^3.2.25",
+    "vue-analytics": "^5.22.1",
+    "vue-axios": "^3.4.0",
+    "vue-gtag": "^2.0.1",
+    "vue-plugin-load-script": "^2.1.1",
+    "vue-router": "^4.0.12",
+    "vue3-flip-countdown": "^0.1.6",
+    "vuex": "4.0.2",
+    "wavesurfer.js": "^6.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "sass": "^1.49.7",
+    "typescript": "^4.4.4",
+    "vue-tsc": "^0.29.8"
+  }
+}

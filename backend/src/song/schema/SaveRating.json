@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "SaveRating",
+	"type": "object",
+	"properties": {
+		"songID": {
+			"type": "string"
+		},
+		"rating": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 10
+		},
+		"listenTime": {
+			"type": "number",
+			"minimum": 0,
+			"maximum": 62
+		}
+	},
+	"required": ["songID", "rating", "listenTime"]
+}

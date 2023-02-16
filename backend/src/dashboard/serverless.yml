@@ -1,0 +1,171 @@
+org: juliprop
+app: democharts
+service: backend-dashboard
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+
+    initDB:
+      timeout: 60
+      handler: srcInitDB.handler
+      events:
+        - http:
+            path: initDB
+            method: post
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+            authorizer: ${self:custom.globals.authorizerDashboard}
+
+    updateDBColumns:
+      timeout: 60
+      handler: srcUpdateDBColumns.handler
+      events:
+        - http:
+            path: updateColumns
+            method: post
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+            authorizer: ${self:custom.globals.authorizerDashboard}
+    
+    getShopProducts:
+        handler: srcGetShopProducts.handler
+        events:
+            - http:
+                  path: getShopProducts
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    getUsers:
+        handler: srcGetUsers.handler
+        events:
+            - http:
+                  path: getUsers
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+
+    getSongs:
+      handler: srcGetSongs.handler
+      events:
+        - http:
+            path: getSongs
+            method: get
+            cors: true
+            integration: lambda
+            authorizer: ${self:custom.globals.authorizerDashboard}
+
+    grantCredits:
+      handler: srcGrantCredits.handler
+      events:
+        - http:
+            path: grantCredits
+            method: post
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+            authorizer: ${self:custom.globals.authorizerDashboard}
+
+    disableSong:
+      handler: srcDisableSong.handler
+      events:
+        - http:
+            path: disableSong
+            method: post
+            cors: true
+            integration: lambda
+            authorizer: ${self:custom.globals.authorizerDashboard}
+
+    updateUser:
+        handler: srcUpdateUser.handler
+        events:
+            - http:
+                path: updateUser
+                method: post
+                cors: true
+                integration: lambda
+                response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                authorizer: ${self:custom.globals.authorizerDashboard}
+
+    rerunCharts:
+        handler: srcRerunCharts.handler
+        events:
+            - schedule: cron(0 7 * * ? *)
+            - http:
+                  path: rerunCharts
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    updateAdminConfigs:
+        handler: srcUpdateAdminConfig.handler
+        events:
+            - http:
+                  path: updateAdminConfig
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    setCouponConfigs:
+        handler: srcSetCouponConfig.handler
+        events:
+            - http:
+                  path: setCouponConfig
+                  method: post
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    
+
+    getAdminConfigs:
+        handler: srcGetAdminConfigs.handler
+        events:
+          - http:
+              path: getAdminConfigs
+              method: get
+              cors: true
+              integration: lambda
+              response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+              authorizer: ${self:custom.globals.authorizerDashboard}
+
+    getAdminConfig:
+      handler: srcGetAdminConfig.handler
+      events:
+        - http:
+            path: getAdminConfig
+            method: post
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: dashboard
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

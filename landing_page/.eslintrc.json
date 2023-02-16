@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "extends": [
+		"plugin:@typescript-eslint/recommended",
+		"eslint:recommended",
+		"plugin:vue/base",
+		"plugin:vue/vue3-recommended",
+		"eslint-config-prettier"
+	],
+	"parser": "vue-eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+		"vue"
+	],
+    "rules": {
+		"vue/html-indent": "off",
+		"vue/html-self-closing": "off",
+		"vue/max-attributes-per-line": "off",
+		"vue/html-quotes": "off",
+		"vue/require-default-prop": "off",
+		"vue/attribute-hyphenation": "off",
+		"vue/html-closing-bracket-newline": "off"
+	}
+}

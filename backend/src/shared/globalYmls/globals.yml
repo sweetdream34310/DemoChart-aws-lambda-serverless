@@ -1,0 +1,18 @@
+default: &default
+    apiPath: https://${self:custom.globals.domain}
+    authorizer: ${output:backend-userpool.Arn}
+    authorizerDashboard: ${output:backend-userpool.DashboardArn}
+    backendUserpoolId: ${output:backend-userpool.Id}
+    backendUserpoolName: ${output:backend-userpool.Name}
+
+dev:
+    <<: *default
+    domain: devapi.democharts.org
+    websocketDomain: devws.democharts.org
+    landingPageUrl: https://dev-www.democharts.org/
+
+prod:
+    <<: *default
+    domain: api.democharts.org
+    websocketDomain: ws.democharts.org
+    landingPageUrl: https://www.democharts.org/

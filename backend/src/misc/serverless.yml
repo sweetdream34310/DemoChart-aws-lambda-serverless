@@ -1,0 +1,55 @@
+org: juliprop
+app: democharts
+service: misc
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    getCountries:
+        handler: srcGetCountries.handler
+        events:
+            - http:
+                  path: getCountries
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+    getGenres:
+        handler: srcGetGenres.handler
+        timeout: 60
+        events:
+            - http:
+                  path: getGenres
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+    getMoods:
+        handler: srcGetMoods.handler
+        events:
+            - http:
+                  path: getMoods
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: misc
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

@@ -1,0 +1,28 @@
+@import "colors";
+@import "responsive";
+
+.item {
+	min-height: 530px;
+	position: relative;
+
+	@include respondTo(mobile) {
+		height: unset;
+		min-height: 530px;
+	}
+
+	background-color: $background-item;
+
+	box-sizing: border-box;
+	border-radius: 20px;
+
+
+	align-items: center;
+	display: flex;
+	justify-content: center;
+
+
+	&.disabled {
+		background-color: $background-item-disabled;
+	}
+
+}

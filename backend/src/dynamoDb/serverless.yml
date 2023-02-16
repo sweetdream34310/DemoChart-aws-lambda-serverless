@@ -1,0 +1,61 @@
+org: juliprop
+app: democharts
+service: backend-dynamoDb
+
+provider:
+    name: aws
+    region: eu-central-1
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+
+custom:
+    databaseName: ${opt:stage, self:provider.stage}-chats
+    databaseRegion: ${self:provider.region}
+
+resources:
+    Resources:
+        Chats:
+            Type: 'AWS::DynamoDB::Table'
+            DeletionPolicy: Retain
+            Properties:
+                TableName: ${self:custom.databaseName}
+                BillingMode: PAY_PER_REQUEST
+                AttributeDefinitions:
+                    - AttributeName: chatID
+                      AttributeType: S
+                    - AttributeName: sortKey
+                      AttributeType: S
+                    - AttributeName: connectionID
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: chatID
+                      KeyType: HASH
+                    - AttributeName: sortKey
+                      KeyType: RANGE
+                StreamSpecification:
+                    StreamViewType: NEW_IMAGE
+                GlobalSecondaryIndexes:
+                    - IndexName: connectionID
+                      KeySchema:
+                          - AttributeName: connectionID
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                    - IndexName: sortKey-Index
+                      KeySchema:
+                          - AttributeName: sortKey
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+
+outputs:
+    databaseName: ${self:custom.databaseName}
+    databaseRegion: ${self:custom.databaseRegion}
+    dbArn:
+        Fn::GetAtt:
+            - Chats
+            - Arn
+    streamArn:
+        Fn::GetAtt:
+            - Chats
+            - StreamArn

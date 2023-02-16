@@ -1,0 +1,28 @@
+<ngx-dropzone
+	id="dropzone"
+	class="uploadWrapper container"
+	(change)="onFileSelect($event)"
+	[multiple]="false"
+	accept=".mp3"
+>
+	<ngx-dropzone-label>
+		<div id="dropzone-icon" class="blur">
+
+			<img src="../../../../assets/upload-animation.gif" class="upload" />
+
+		</div>
+		<span class="upload-desc">
+			<h1>Upload your song</h1>
+			Select file or drag and drop here. MP3 only.
+		</span>
+
+
+		<div class="credits-left-container">
+
+			<h2>{{ credits$ | async }}</h2>
+			<span>Uploads available</span>
+		</div>
+
+	</ngx-dropzone-label>
+</ngx-dropzone>
+

@@ -1,0 +1,196 @@
+<!--<h1 class="dark">Demoplayer</h1>-->
+
+<div id="demoplayer" class="container main-container full-height">
+
+	<div class="filter container container-desktop full-width-mobile" >
+		<div *ngFor="let item of currentGenreFilter"
+				 class="genre-filter-item pointer"
+				 (mouseover)="activeMouseHover = item[1]"
+				 (mouseleave)="activeMouseHover = undefined"
+				 (click)="removeFilter(item)">
+
+			<app-icon-close *ngIf="item[1] === activeMouseHover" style="margin-right: 8px"></app-icon-close>
+			{{item[1]}}
+		</div>
+		<app-select
+			[options]="genres$ | async"
+			placeholder="Add Filter"
+			class="genre-dropdown desktop-only"
+			[showValueInInput]="false"
+			[formControl]="genreFilter"
+		></app-select>
+		<div class="mobile-only" style="width: 16px; height: 1px"></div>
+
+
+		<app-dropdown-list
+			*ngIf="filterOpened"
+			[items]="genres$ | async"
+			[labelFunction]="dropdownLabelFctn()"
+			(onSelect)="selectFilter($event)"
+		></app-dropdown-list>
+	</div>
+
+	<div *ngIf="!finished && !(song$ | async) as song" class="no-more-songs-container">
+		<app-spinner></app-spinner>
+	</div>
+
+	<div *ngIf="finished && !(song$ | async) as song" class="no-more-songs-container">
+
+		<app-demoshark-information
+		>
+			<span class="no-more-songs-title">You have heard all available songs,<br />come back later or <strong>reset your filters!</strong></span>
+		</app-demoshark-information>
+	</div>
+
+	<div *ngIf="(song$ | async) as song" class="song-content-wrapper">
+		<div class="data-container">
+			<div class="data-inner-container">
+				<img
+					id="cover"
+					[src]="song.coverSrc"
+					alt="cover"
+					(error)="song.coverSrc = '../../../assets/cover_placeholder.jpg'"
+				/>
+				<div class="mobile-sideboard mobile-only">
+					<div
+						class="mobile-cta"
+						(click)="toggleSavedArtist()">
+						<app-icon-heart [isActive]="isFollowedByRequestedUser"></app-icon-heart>
+					</div>
+
+					<div
+						class="mobile-cta"
+						(click)="createChat()"
+					>
+						<fa-icon
+							class="chat button-icon"
+							[size]="'lg'"
+							[icon]="faPaperPlane"
+						></fa-icon>
+					</div>
+				</div>
+			</div>
+
+			<div id="details">
+				<div>
+					<div id="title">{{ song.title }}</div>
+					<div class="byArtist">
+						by
+						<div
+							[routerLink]="['/profile', song.artist.slug]"
+							class="link underlined"
+						>
+						{{ song.artist.artistName }}
+					</div>
+					</div>
+					<div id="genre" class=" desktop-only">
+						{{ song.genreID | labelSearch: 'genres' | async }}
+					</div>
+					<div id="country" class=" desktop-only">
+						from {{ song.countryID | labelSearch: 'countries' | async }}
+					</div>
+				</div>
+
+			</div>
+			<div id="buttons">
+				<!--					<div>-->
+				<!--						<fa-icon-->
+				<!--							class="replay"-->
+				<!--							(click)="replay()"-->
+				<!--							[icon]="faUndoAlt"-->
+				<!--						></fa-icon>-->
+				<!--					</div>-->
+
+
+				<div class="desktop-only">
+					<div class="button-container">
+
+						<button
+							button-icon
+							(click)="reportDemo(song)"
+						>
+							<app-icon-flag></app-icon-flag>
+							Report demo
+						</button>
+
+						<button
+							button-icon
+							(click)="toggleSavedArtist()"
+						>
+							<app-icon-heart [isActive]="isFollowedByRequestedUser"></app-icon-heart>
+							{{isFollowedByRequestedUser ? 'Saved Artist' : 'Save Artist'}}
+						</button>
+
+						<button
+							button-icon
+							(click)="createChat()"
+						>
+
+							<app-icon-chat></app-icon-chat>
+							Send message
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="rating">
+			<fa-icon
+				class="star"
+				[icon]="faStar"
+				*ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 10]"
+				(click)="rate(i)"
+				[ngClass]="{ active: i | rating: rating }"
+			></fa-icon>
+		</div>
+
+		<!--		<span class="rate"> </span>-->
+
+		<div class="playcontrol">
+
+			<div class="play-button-container left colorful-on-hover">
+				<button id="play-button" style="height: 100%; width: 100%" (click)="togglePlay()">
+					<app-icon-pause *ngIf="(playing | async)"></app-icon-pause>
+					<app-icon-play *ngIf="!(playing | async)"></app-icon-play>
+					<app-spinner *ngIf="loading"></app-spinner>
+				</button>
+			</div>
+
+			<div class="waves">
+				<app-waveform
+					#waveform
+					id="waveform"
+					[url]="song.mp3Src"
+					[progress]="true"
+					class="w-100"
+					(component)="waveformInit($event)"
+				></app-waveform>
+			</div>
+
+			<div class="next-button-container right colorful-on-hover">
+				<button id="next-button" style="height: 100%" (click)="next()">
+					<app-icon-next *ngIf="!loading"></app-icon-next>
+					<app-spinner *ngIf="loading"></app-spinner>
+				</button>
+			</div>
+		</div>
+
+		<div class="nextRow desktop-only flex">
+			<div class="one-third left">
+				<div id="chartsUnlock" *ngIf="(ratings24H$ | async) < 10">
+					Demo <span class="red">{{ ratings24H$ | async }}</span> out of 10
+				</div>
+			</div>
+			<div class="one-third center">
+<!--				<div class="pointer " (click)="reportDemo(song)">Report demo</div>-->
+			</div>
+			<div class="one-third right">
+
+			</div>
+
+
+
+		</div>
+	</div>
+
+</div>

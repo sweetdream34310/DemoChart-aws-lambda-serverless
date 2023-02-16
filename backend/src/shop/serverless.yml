@@ -1,0 +1,151 @@
+org: juliprop
+app: democharts
+service: backend-shop
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # upsert Product
+    upsertProduct:
+        handler: srcUpsertProduct.handler
+        events:
+          - http:
+              path: upsertProduct
+              method: post
+              cors: true
+              integration: lambda
+              response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+              authorizer: ${self:custom.globals.authorizerDashboard}
+
+    upsertCouponConfig:
+        handler: srcUpsertCouponConfig.handler
+        events:
+          - http:
+              path: upsertCouponConfig
+              method: post
+              cors: true
+              integration: lambda
+              response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+              authorizer: ${self:custom.globals.authorizerDashboard}
+
+    deleteCouponConfig:
+        handler: srcDeleteCouponConfig.handler
+        events:
+          - http:
+              path: deleteCouponConfig
+              method: post
+              cors: true
+              integration: lambda
+              response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+              authorizer: ${self:custom.globals.authorizerDashboard}
+
+
+    verifyPayment:
+        handler: srcVerifyPayment.handler
+        events:
+          - http:
+              path: verifyPayment
+              method: post
+              cors: true
+              integration: lambda
+
+    getCouponConfig:
+        handler: srcGetCouponConfig.handler
+        events:
+            - http:
+                  path: getCouponConfig
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    getCouponConfigs:
+        handler: srcGetCouponConfigs.handler
+        events:
+            - http:
+                  path: getCouponConfigs
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                #   authorizer: ${self:custom.globals.authorizerDashboard}
+
+    # get Products
+    getProducts:
+        handler: srcGetProducts.handler
+        events:
+            - http:
+                  path: getProducts
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+#                  authorizer: ${self:custom.globals.authorizer}
+
+    # get product by product id
+    getProduct:
+        timeout: 60
+        handler: srcGetProduct.handler
+        events:
+            - http:
+                  path: getProduct/{productId}
+                  method: get
+                  cors: true
+                  integration: lambda
+                  request:
+                    parameters:
+                      paths:
+                        productId: true
+#                  authorizer: ${self:custom.globals.authorizer}
+
+    # get Products
+    getOrders:
+        handler: srcGetOrders.handler
+        events:
+            - http:
+                  path: getOrders
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizerDashboard}
+
+    # get product by product id
+    placeOrder:
+        handler: srcPlaceOrder.handler
+        events:
+            - http:
+                path: placeOrder
+                method: post
+                cors: true
+                integration: lambda
+#                authorizer: ${self:custom.globals.authorizer}
+
+    # get product by product id
+    confirmOrder:
+        handler: srcConfirmOrder.handler
+        events:
+          - http:
+              path: confirmOrder
+              method: post
+              cors: true
+              integration: lambda
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: shop
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

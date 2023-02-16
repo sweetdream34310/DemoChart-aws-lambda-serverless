@@ -1,0 +1,137 @@
+<ng-template #loading>
+	<app-page-loading-animation></app-page-loading-animation>
+</ng-template>
+
+<div class="full-width" *ngIf="profile$ | async as profile; else loading">
+	<img
+		id="headerImage"
+		[src]="profile.profileHeader"
+		(error)="profile.profileHeader = '../../../assets/charts_bg.png'"
+	/>
+
+	<div class="container">
+		<div id="headRow" class="flex col ac">
+			<img
+				id="profilePic"
+				[src]="profile.profileImg"
+				(error)="
+					profile.profileImg = '../../../assets/default-avatar.svg'
+				"
+				class="shadow"
+				alt="profile image"
+			/>
+
+			<div class="sendMessage" >
+				<button
+					button-icon
+					class="button-cta"
+					*ngIf="!(profile.uid | isMe | async)"
+					(click)="createChat()"
+				>
+<!--					<fa-icon-->
+<!--						class="chat button-icon"-->
+<!--						(click)="createChat()"-->
+<!--						[icon]="faPaperPlane"-->
+<!--					></fa-icon>-->
+					<app-icon-chat style="font-size: 0;"></app-icon-chat>
+					Send Message
+				</button>
+				<button
+					button-icon
+					class="button-cta"
+					*ngIf="!(profile.uid | isMe | async)"
+					(click)="toggleSavedArtist()"
+				>
+					<app-icon-heart style="font-size: 0;" [isActive]="isFollowedByRequestedUser"></app-icon-heart>
+
+					{{isFollowedByRequestedUser ? 'Saved Artist' : 'Save Artist'}}
+				</button>
+
+				<button
+					class="desktop-only"
+					button-icon
+					*ngIf="(profile.uid | isMe | async)"
+					[routerLink]="'/settings'"
+				>
+					<app-icon-settings style="margin-right: 8px"></app-icon-settings>
+					Edit Profile
+				</button>
+
+			</div>
+			<div class="flex col ac">
+				<h1 class="name" *ngIf="profile.userType === 2">{{ profile.firstName + ' ' + profile.lastName }}</h1>
+				<h1 class="name" *ngIf="profile.userType === 1">{{ profile.artistName }}</h1>
+				<p id="bio">{{ profile.bio }}</p>
+			</div>
+		</div>
+
+		<div id="bodyRow">
+			<div>
+				<h3>About</h3>
+
+				<app-profile-about [profile]="profile"></app-profile-about>
+			</div>
+
+			<div *ngIf="profile.userType === 1">
+				<h3>Songs Online</h3>
+
+				<app-profile-demos
+					[demos]="profile.uploadedSongs"
+					[profile]="profile"
+				></app-profile-demos>
+			</div>
+
+
+			<div *ngIf="profile.userType === 1">
+				<h3>Previous Releases</h3>
+				<app-profile-default-items
+					[items]="itemsPreviousReleases"
+					[isMe]="(profile.uid | isMe | async)"
+					[emptyText]="{
+						isMe: 'Fill out your Profile in the settings.',
+						isForeign: 'No information available'
+					}"
+				></app-profile-default-items>
+			</div>
+
+			<div *ngIf="profile.userType === 2">
+				<h3>Job & Skills</h3>
+				<app-profile-default-items
+					[items]="itemsJobAndSkills"
+					[isMe]="(profile.uid | isMe | async)"
+					[emptyText]="{
+						isMe: 'Fill out your Profile in the settings.',
+						isForeign: 'No information available'
+					}"
+				></app-profile-default-items>
+			</div>
+
+			<div *ngIf="profile.userType === 2">
+				<h3>Artist Collaborations</h3>
+				<app-profile-default-items
+					[items]="itemsReferences"
+					[isMe]="(profile.uid | isMe | async)"
+					[emptyText]="{
+						isMe: 'Fill out your Profile in the settings.',
+						isForeign: 'No information available'
+					}"
+				></app-profile-default-items>
+			</div>
+
+
+<!--			<div>-->
+<!--				<h3>TEST | All</h3>-->
+<!--				<app-profile-default-items-->
+<!--					[items]="itemsAll"-->
+<!--					[isMe]="(profile.uid | isMe | async)"-->
+<!--					[emptyText]="{-->
+<!--						isMe: 'Fill out your Profile in the settings.',-->
+<!--						isForeign: 'No information available'-->
+<!--					}"-->
+<!--				></app-profile-default-items>-->
+<!--			</div>-->
+		</div>
+
+
+	</div>
+</div>

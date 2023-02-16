@@ -1,0 +1,4 @@
+Democharts.kdbx
+*.kdbx
+
+./academy/node_modules

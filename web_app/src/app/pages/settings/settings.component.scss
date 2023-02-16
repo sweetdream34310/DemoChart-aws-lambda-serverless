@@ -1,0 +1,109 @@
+@import 'variables';
+@import '~rfs/scss';
+@import 'responsive';
+@import "colors";
+
+:host {
+	flex: 1;
+}
+
+.header2 {
+	margin-top: 2rem;
+}
+
+form {
+	margin-top: 4rem;
+}
+
+.row {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+
+	@media (min-width: $md) {
+		flex-direction: row;
+	}
+
+	& > * {
+		flex: 1;
+
+		&:not(:last-child) {
+			margin-right: 1rem;
+
+			@include respondTo(mobile){
+				margin-right: 0;
+			}
+		}
+
+	}
+}
+
+button ~ button {
+	@include respondTo(mobile) {
+		margin-top: 8px;
+	}
+}
+
+#invalid {
+	display: none;
+}
+
+#name.ng-invalid.ng-dirty ~ #invalid {
+	display: block;
+}
+
+.settings-subtitle {
+	margin-top: 4rem;
+	margin-bottom: 2rem;
+	@include font-size(1.4rem);
+}
+
+#references, #dangerZone {
+	margin-bottom: 4rem;
+}
+
+.items {
+	background: $background-item;
+	padding: 12px 24px;
+	border-radius: 5px;
+	align-items: center;
+}
+.items > div {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.mt-4 {
+	margin-top: 2rem;
+}
+
+
+.custom-input {
+	padding: 16px 16px;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.custom-input.select {
+	width: unset;
+	padding: 0;
+	display: block;
+}
+
+
+.setting-section {
+	padding: 64px 0;
+	margin-top: 32px;
+}
+
+.bg-1 {
+	background: $background-deep;
+}
+
+.bg-2 {
+	background: $background-default;
+}
+
+.bg-1, .bg-2 {
+	padding-bottom: 64px;
+}

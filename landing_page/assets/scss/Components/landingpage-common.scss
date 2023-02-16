@@ -1,0 +1,68 @@
+
+#snapport {
+	scroll-behavior: smooth !important;
+	background-image: url('../assets/lines/huge-lines.svg');
+}
+
+
+section {
+	scroll-snap-align: center;
+	height: 100vh;
+	display: flex;
+}
+
+/*.text-container {*/
+/*	align-items: center;*/
+/*	display: flex;*/
+/*}*/
+
+.outerBackgroundContainer {
+	position: relative;
+}
+
+.blurredBackgroundContainer {
+	position: relative;
+	overflow: hidden;
+
+	section {
+		position: relative;
+	}
+}
+
+.blurredBackground {
+	position: absolute;
+	object-fit: cover;
+	filter: blur(16px);
+	//top: 0;
+	//left: -50px;
+	//width: 118%;
+	width: 100%;
+	height: 100%;
+	transform: scale(1.3) scaleX(-1.3) !important;
+
+}
+
+.flex {
+	display: flex;
+}
+.center {
+	align-items: center;
+}
+
+.inverted-img {
+
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+}
+
+.signup-title {
+	margin-bottom: 32px;
+	font-size: 56px;
+}
+
+//----MOBILE STYLEZ----//
+@media screen and (max-width: 768px) {
+
+}
+
+

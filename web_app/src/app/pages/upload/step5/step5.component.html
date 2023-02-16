@@ -1,0 +1,52 @@
+<div id="packages" class="uploadWrapper container">
+	<div class="package">
+		<h2 class="packageName">Credits</h2>
+		<div class="packageDescription">
+			Use your existing credits
+			<br />
+			You have {{ credits$ | async }} credits left
+		</div>
+		<div class="packagePrice">1 Credit</div>
+		<button
+			*ngIf="(credits$ | async) > 0; else noCredits"
+			button-ter
+			(click)="buyWithCredits()"
+			[loading]="loading && plan === 'credits'"
+		>
+			Choose this Plan
+		</button>
+		<ng-template #noCredits>
+			<div disabled button-ter>You have no credits</div>
+		</ng-template>
+	</div>
+
+	<div class="package">
+		<h2 class="packageName">Yearly</h2>
+		<div class="packageDescription">
+			Pay for 12 uploads upfront for a 20% discount
+		</div>
+		<div class="packagePrice">39$ / upload</div>
+		<button
+			button-ter
+			[disabled]="true"
+			(click)="buyCredits('yearly')"
+			[loading]="loading && plan === 'yearly'"
+		>
+			<!--Choose this Plan-->Coming soon
+		</button>
+	</div>
+
+	<div class="package">
+		<h2 class="packageName">One time</h2>
+		<div class="packageDescription">Pay for one upload</div>
+		<div class="packagePrice">49$ / upload</div>
+		<button
+			button-ter
+			[disabled]="true"
+			(click)="buyCredits('monthly')"
+			[loading]="loading && plan === 'monthly'"
+		>
+			<!--Choose this Plan-->Coming soon
+		</button>
+	</div>
+</div>

@@ -1,0 +1,116 @@
+org: juliprop
+app: democharts
+service: backend-userpool
+
+provider:
+    name: aws
+    region: eu-central-1
+    runtime: nodejs14.x
+
+custom:
+    stage: ${opt:stage, self:provider.stage}
+    name: ${self:custom.stage}-userpool
+
+resources:
+    Resources:
+        # Userpool for the webapp
+        CognitoUserPool:
+            Type: AWS::Cognito::UserPool
+            Properties:
+                # Generate a name based on the stage
+                UserPoolName: ${self:custom.name}
+                # Set email as an alias
+                UsernameAttributes:
+                    - email
+                AutoVerifiedAttributes:
+                    - email
+                LambdaConfig:
+                    # TODO replace hardcoded arn
+                    CustomMessage: 'arn:aws:lambda:eu-central-1:716337769397:function:backend-signup-${self:provider.stage}-customConfirmationMail'
+                    PreSignUp: 'arn:aws:lambda:eu-central-1:716337769397:function:backend-signup-${self:provider.stage}-srcPreSignup'
+                    PostConfirmation: 'arn:aws:lambda:eu-central-1:716337769397:function:backend-signup-${self:provider.stage}-postConfirmation'
+                EmailConfiguration:
+                    EmailSendingAccount: 'DEVELOPER'
+                    # Arn from aws SES
+                    SourceArn: 'arn:aws:ses:eu-west-1:716337769397:identity/hello@democharts.org'
+                    ReplyToEmailAddress: 'hello@democharts.org'
+                    From: '"Democharts" <hello@democharts.org>'
+                VerificationMessageTemplate:
+                    DefaultEmailOption: 'CONFIRM_WITH_CODE'
+                Policies:
+                    PasswordPolicy:
+                        MinimumLength: 8
+                        RequireLowercase: true
+                        RequireNumbers: true
+                        RequireSymbols: false
+                        RequireUppercase: true
+
+        # Client for the webapp aka Angular
+        WebAppClient:
+            Type: AWS::Cognito::UserPoolClient
+            Properties:
+                # Generate an app client name based on the stage
+                ClientName: ${self:custom.stage}-web-app-client
+                UserPoolId:
+                    Ref: CognitoUserPool
+                ExplicitAuthFlows:
+                    - ADMIN_NO_SRP_AUTH
+                GenerateSecret: false
+                PreventUserExistenceErrors: ENABLED
+
+        # Userpool for the dashboard
+        CognitoUserPoolDashboard:
+            Type: AWS::Cognito::UserPool
+            Properties:
+                # Generate a name based on the stage
+                UserPoolName: ${self:custom.name}-dashboard
+                # Set email as an alias
+                UsernameAttributes:
+                    - email
+                AutoVerifiedAttributes:
+                    - email
+                AdminCreateUserConfig:
+                    AllowAdminCreateUserOnly: true
+                Policies:
+                    PasswordPolicy:
+                        MinimumLength: 6
+                        RequireLowercase: false
+                        RequireNumbers: false
+                        RequireSymbols: false
+                        RequireUppercase: false
+
+        # Client for the dashboard
+        CognitoUserPoolClientDashboard:
+            Type: AWS::Cognito::UserPoolClient
+            Properties:
+                # Generate an app client name based on the stage
+                ClientName: ${self:custom.stage}-user-pool-client-dashboard
+                UserPoolId:
+                    Ref: CognitoUserPoolDashboard
+                ExplicitAuthFlows:
+                    - ADMIN_NO_SRP_AUTH
+                GenerateSecret: false
+                PreventUserExistenceErrors: ENABLED
+
+outputs:
+    # webapp
+    Arn:
+        Fn::GetAtt:
+            - CognitoUserPool
+            - Arn
+    Id:
+        Ref: CognitoUserPool
+    Name: ${self:custom.name}
+    WebAppClientId:
+        Ref: WebAppClient
+
+    # dashboard
+    DashboardArn:
+        Fn::GetAtt:
+            - CognitoUserPoolDashboard
+            - Arn
+    DashboardId:
+        Ref: CognitoUserPoolDashboard
+    DashboardName: ${self:custom.name}-dashboard
+    DashboardClientId:
+        Ref: CognitoUserPoolClientDashboard

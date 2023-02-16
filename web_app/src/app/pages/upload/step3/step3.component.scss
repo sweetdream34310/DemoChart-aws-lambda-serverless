@@ -1,0 +1,86 @@
+@import 'variables';
+@import 'responsive';
+@import '~rfs/scss';
+
+form {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+	@media (min-width: $md) {
+		flex-direction: row;
+	}
+}
+
+#image {
+	border-radius: $borderRadius;
+	cursor: pointer;
+	background: 100% 100% / auto 4rem no-repeat
+			url('../../../../assets/upload_arrow.svg'),
+		$transparentBg;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	@include respondTo(mobile) {
+		margin-top: 64px;
+	}
+
+	height: 10rem;
+	width: 10rem;
+	margin: 0 0 2rem 0;
+	overflow: hidden;
+
+	@media (min-width: $md) {
+		height: 19rem;
+		width: 19rem;
+		margin: 0 2rem 0 0;
+	}
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	.uploadCover {
+		margin-bottom: 1rem;
+
+		@media (min-width: $md) {
+			@include font-size(1.3rem);
+			margin-bottom: 3rem;
+		}
+	}
+}
+#inputs {
+	flex: 1;
+	width: 100%;
+
+	.select {
+		margin-bottom: 2rem;
+
+		div {
+			text-transform: uppercase;
+			margin-bottom: 0.6rem;
+			letter-spacing: 3px;
+			color: $primary;
+		}
+
+		app-select {
+			display: block;
+
+			&::ng-deep {
+				input {
+					@include font-size(1.5rem);
+					background-color: transparent;
+					border: none;
+					border-bottom: 1px solid $transparentBg;
+					color: white;
+
+					&::placeholder {
+						color: white;
+					}
+				}
+			}
+		}
+	}
+}

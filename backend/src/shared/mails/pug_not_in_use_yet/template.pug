@@ -1,0 +1,65 @@
+doctype html
+head
+    title Automatic Email
+    style
+        include style.css
+body
+    table
+        tr
+            td
+                table
+                    tr
+                        td(style="background: #FFF4EB; padding: 18px;")
+                            a(href= process.env.FRONTEND_URL + '?ref=email' style="margin: 0; padding: 0;")
+                                img(src= process.env.FRONTEND_URL + '/icons/newsletter/email_lba_title.png' width="400" height="134")
+                    tr
+                        td
+                            block banner
+                    tr
+                        td(style="padding: 18px;")
+                            table
+                                tr
+                                    td
+                                        block content
+
+        tr(style="text-align: center")
+            td(style="text-align: center")
+                div(style="display: inline-block;")
+                    a(href="https://www.youtube.com/channel/UCNTkpYT0om3KoVNW_JDz20A")
+                        img(src= process.env.FRONTEND_URL + '/icons/newsletter/social_youtube.png' width=32 height=32)
+                div(style="display: inline-block; margin-left: 15px")
+                    img(src= process.env.FRONTEND_URL + '/icons/newsletter/social_newsletter.png' width=32 height=32)
+                div(style="display: inline-block; margin-right: 15px; margin-left: 15px")
+                    a(href="https://wa.me/+4367762882782/?text=Hey!")
+                        img(src= process.env.FRONTEND_URL + '/icons/newsletter/social_whatsapp.png' width=32 height=32)
+                div(style="display: inline-block; margin-right: 15px;")
+                    a(href="https://www.facebook.com/littlebig.art/")
+                        img(src= process.env.FRONTEND_URL + '/icons/newsletter/social_facebook.png' width=32 height=32)
+                div(style="display: inline-block")
+                    a(href="https://www.instagram.com/littlebig.art_events/")
+                        img(src= process.env.FRONTEND_URL + '/icons/newsletter/social_instagram.png' width=32 height=32)
+
+        tr
+            td
+                p(style="text-align: center")
+                    a(href= process.env.HOMEPAGE_URL)
+                        strong www.littlebig.art
+
+        tr
+            td
+                p(style="text-align: center") Copyright 2019 Open Arts GmbH, All rights reserved.
+                    br
+                    | Reply to this mail to get in touch.
+
+        tr
+            td
+                p(style="text-align: center")
+                    strong Our mailing address:
+                    br
+                    | Open Arts GmbH
+                    br
+                    | Marxergasse 24/2/EG
+                    br
+                    | Vienna 1030
+                    br
+                    | Austria

@@ -1,0 +1,299 @@
+<div class="bg-1">
+	<div class="container">
+		<div class="setting-section">
+			<h2 class="title">Profile Settings</h2>
+			<div class="subtitle">Adjust your Democharts Settings</div>
+		</div>
+
+		<form [formGroup]="profile">
+			<div class="row">
+				<button
+					button-accent
+					type="button"
+					[loading]="uploadingProfile"
+					(click)="uploadProfilePic()"
+				>
+					Upload Profile Picture
+				</button>
+
+				<button
+					button-accent
+					type="button"
+					[loading]="uploadingHeader"
+					(click)="uploadProfileHeader()"
+				>
+					Upload Profile Header
+				</button>
+			</div>
+
+
+			<div class="settings-subtitle">Personal information</div>
+
+			<div class="row mt-4">
+				<app-form-field>
+					<label class="custom-label" for="firstName">First name</label>
+					<input
+						id="firstName"
+						class="custom-input"
+						type="text"
+						formControlName="firstName"
+						required
+					/>
+					<span *ngIf="submitted && !firstName.hasError('nameValid')" class="hint">
+				Please fill in a name (max 35 characters)
+			</span>
+					<span *ngIf="firstName.hasError('nameValid')" id="invalid" class="hint">
+				Name already exists
+			</span>
+				</app-form-field>
+
+				<app-form-field>
+					<label class="custom-label" for="lastName">Last Name</label>
+					<input
+						id="lastName"
+						class="custom-input"
+						type="text"
+						formControlName="lastName"
+						required
+					/>
+					<span *ngIf="submitted && !lastName.hasError('nameValid')" class="hint">
+				Please fill in a name (max 35 characters)
+			</span>
+					<span *ngIf="lastName.hasError('nameValid')" id="invalid" class="hint">
+				Name already exists
+			</span>
+				</app-form-field>
+
+				<app-form-field *ngIf="isArtist | async">
+					<label class="custom-label" for="artistName">Artist Name</label>
+					<input
+						id="artistName"
+						class="custom-input"
+						type="text"
+						formControlName="artistName"
+						required
+					/>
+					<span *ngIf="submitted && !artistName.hasError('nameValid')" class="hint">
+				Please fill in a name (max 35 characters)
+			</span>
+					<span *ngIf="artistName.hasError('nameValid')" id="invalid" class="hint">
+				Name already exists
+			</span>
+				</app-form-field>
+
+			</div>
+
+			<div class="row">
+
+				<app-form-field>
+					<label class="custom-label" for="jobTitle">{{ (isArtist | async) ? 'Main Genre' : 'Jobtitle'}}</label>
+					<!--				<input-->
+					<!--					id="jobTitle"-->
+					<!--					class="custom-input"-->
+					<!--					type="text"-->
+					<!--					formControlName="jobTitle"-->
+					<!--				/>-->
+
+					<app-select
+						*ngIf="isArtist | async"
+						[options]="genreOptions"
+						[dark]="true"
+						placeholder="select a job description"
+						formControlName="genreID"
+					></app-select>
+
+					<app-select
+						*ngIf="isExpert | async"
+						[options]="jobTitleOptions"
+						[dark]="true"
+						placeholder="select a job description"
+						formControlName="jobTitle"
+					></app-select>
+					<span *ngIf="submitted && profile.value.jobTitle === undefined" class="hint">please fill out this field.</span>
+				</app-form-field>
+
+				<app-form-field id="select">
+					<label class="custom-label" for="name">Country</label>
+					<app-select
+						class="dark"
+						[dark]="true"
+						[options]="countries$ | async"
+						placeholder="select a country"
+						formControlName="countryID"
+					></app-select>
+					<span *ngIf="submitted && false" class="hint">
+				Please select a country
+			</span>
+				</app-form-field>
+
+				<div></div>
+			</div>
+
+			<div class="row">
+				<app-form-field>
+					<label class="custom-label" for="bio">Bio</label>
+					<textarea
+						id="bio"
+						class="custom-input"
+						type="text"
+						formControlName="bio"
+						style="resize: none; height: 160px"
+						rows="4"
+					></textarea>
+					<span *ngIf="submitted" class="hint"> max 400 characters </span>
+				</app-form-field>
+			</div>
+
+			<button button-accent (click)="updateProfile()" [loading]="loading">
+				Save Settings
+			</button>
+		</form>
+	</div>
+</div>
+<div class="bg-2">
+	<div class="container">
+
+		<div class="setting-section">
+			<h2 class="title">Social Media Links</h2>
+			<div class="subtitle">And other web links</div>
+		</div>
+		<div *ngFor="let social of socialMedias">
+			<div class="row items">
+				<div style="text-transform: uppercase; font-weight: 900">{{ social.platform }}</div>
+				<div>{{ social.link }}</div>
+				<div>{{ social.linkText }}</div>
+				<fa-icon
+					class="pointer"
+					style="flex: 0"
+					[icon]="faTrash"
+					(click)="deleteSocial(social)"
+				></fa-icon>
+			</div>
+		</div>
+
+		<div>
+			<form class="row" [formGroup]="addSocialMedia">
+				<app-form-field>
+					<label class="custom-label" for="platform">Platform</label>
+					<app-select
+						id="platform"
+						class="custom-input select"
+						type="text"
+						formControlName="platform"
+						[dark]="true"
+						[options]="platforms"
+						placeholder="select a platform"
+						required
+					></app-select>
+					<span *ngIf="socialSubmitted" class="hint"
+					>Field is required</span
+					>
+				</app-form-field>
+
+				<app-form-field>
+					<label class="custom-label" for="link">Profile Link</label>
+					<input
+						id="link"
+						class="custom-input"
+						type="link"
+						formControlName="link"
+						required
+					/>
+					<span *ngIf="socialSubmitted" class="hint"
+					>Field is required</span
+					>
+				</app-form-field>
+
+				<app-form-field>
+					<label class="custom-label" for="linkText">Link Text</label>
+					<input
+						id="linkText"
+						class="custom-input"
+						type="text"
+						formControlName="linkText"
+						required
+					/>
+					<span *ngIf="socialSubmitted" class="hint"
+					>Field is required</span
+					>
+				</app-form-field>
+			</form>
+
+			<button button-accent (click)="addSocial()">Add platform</button>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div
+	*ngIf="(isArtist | async)"
+	class="bg-1">
+	<div class="setting-section">
+		<div class="container">
+			<h2 class="title">Add Your Previous Releases</h2>
+			<div class="subtitle">Let the people know who you worked with</div>
+		</div>
+	</div>
+
+	<app-profile-items-edit
+		[itemType]="'type_previous_releases'"
+		[filteredItems]="itemsPreviousReleases"
+		(addItem)="addItem($event)"
+		(deleteItem)="removeItem($event)"
+		[title]="'Song title'"
+	></app-profile-items-edit>
+</div>
+
+
+<div
+	*ngIf="(isExpert | async)"
+	class="bg-1">
+	<div class="setting-section">
+		<div class="container">
+			<h2 class="title">Add Your Skills And Jobs</h2>
+			<div class="subtitle">Let the people know who you worked with</div>
+		</div>
+	</div>
+
+	<app-profile-items-edit
+		[itemType]="'type_job_and_skills'"
+		[filteredItems]="itemsJobAndSkills"
+		(addItem)="addItem($event)"
+		(deleteItem)="removeItem($event)"
+		[title]="'Job title'"
+	></app-profile-items-edit>
+</div>
+
+
+<div *ngIf="(isExpert | async)" class="bg-2">
+	<div class="setting-section">
+		<div class="container">
+			<h2 class="title">Add Artist Collaborations</h2>
+			<div class="subtitle">Let the people know who you worked with</div>
+		</div>
+	</div>
+
+	<app-profile-items-edit
+		[itemType]="'type_artist_collaborations'"
+		[filteredItems]="itemsReferences"
+		(addItem)="addItem($event)"
+		(deleteItem)="removeItem($event)"
+		[title]="'Artist'"
+	></app-profile-items-edit>
+</div>
+
+
+<div [class]="(isExpert | async) ? 'bg-1' : 'bg-2'">
+	<div class="container">
+		<div class="setting-section">
+			<div class="container">
+				<h2 class="title">Danger Zone</h2>
+				<div class="subtitle">Proceed with caution!</div>
+			</div>
+		</div>
+
+		<button button-accent (click)="closeAccount()" style="margin-bottom: 128px">Close Account</button>
+	</div>
+</div>

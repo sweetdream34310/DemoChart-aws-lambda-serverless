@@ -1,0 +1,9 @@
+@import "colors";
+
+.icon-heart {
+	fill: $fill-default-icon;
+
+	&.active {
+		fill: $primary;
+	}
+}

@@ -1,0 +1,36 @@
+<div *ngIf="contactsLoaded" id="grid" class="container main-container full-height" [ngClass]="{ inChat: inChat }">
+	<app-contacts id="contacts"
+								[chats$]="chats$"
+								(selectChat)="selectChat($event)"
+								[selectedChat]="selectedChat"
+								[(inChat)]="inChat">
+	</app-contacts>
+
+	<app-chat-window id="chat" [selectedChat]="selectedChat" [(inChat)]="inChat"></app-chat-window>
+
+	<!-- <app-details
+		id="details"
+		class="transition"
+		[(inDetails)]="inDetails"
+		[ngClass]="{ inDetails: inDetails }"
+	></app-details> -->
+</div>
+
+<div *ngIf="noContacts && !chatSlug" class="shark-outer-wrapper">
+	<div class="container shark-wrapper">
+		<div class="shark-container">
+			<app-demoshark-information
+				*ngIf="user.userType === 1"
+				[text]="'No messages available at the moment. Upload your next demo and connect with experts.'"
+				[buttonText]="'Upload new song'"
+				(buttonClicked)="goToSongUpload()"
+			></app-demoshark-information>
+			<app-demoshark-information
+				*ngIf="user.userType !== 1"
+				[text]="'No messages available at the moment. Contact your first Artist to create a chatroom'"
+				[buttonText]="'Go to demoplayer'"
+				(buttonClicked)="goToDemoplayer()"
+			></app-demoshark-information>
+		</div>
+	</div>
+</div>

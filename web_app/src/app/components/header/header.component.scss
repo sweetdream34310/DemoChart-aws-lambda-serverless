@@ -1,0 +1,232 @@
+@import 'variables';
+@import 'colors';
+@import 'responsive';
+@import '~rfs/scss';
+
+:host {
+	box-sizing: border-box;
+	border-bottom: solid $borderColor 0.5px;
+	padding: 10px 0;
+	height: $navHeightMobile;
+}
+
+
+.header {
+	position: fixed;
+	width: 100%;
+	z-index: 100;
+	top: 0;
+	background-color: $background-navigation;
+	padding: 16px 0;
+
+	@include respondTo(mobile) {
+		height: 64px;
+		box-sizing: border-box;
+	}
+}
+
+img {
+	height: 100%;
+	width: auto;
+}
+
+nav {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+a, fa-icon {
+	color: $txt-default;
+	text-transform: uppercase;
+	text-decoration: none;
+	margin-left: 20px;
+	font-weight: 500;
+	cursor: pointer;
+	padding: 18px 36px;
+
+	@media (max-width: $xl) {
+		padding: 18px 18px;
+	}
+
+	&.active {
+		text-decoration: underline;
+		text-underline-offset: 0.6rem;
+		text-decoration-color: $primary;
+	}
+
+
+	transition: transform 100ms ease-in;
+	transform-origin: left;
+
+	&:hover {
+		transform: scale(1.02);
+		color: $primary;
+	}
+}
+
+
+.loggedIn {
+
+	a {
+		padding: 18px 4px;
+	}
+}
+
+.profile-popup-container {
+	position: relative;
+}
+
+.profile-popup {
+	position: absolute;
+	border: 1px solid rgb(149 149 149 / 21%);
+	border-radius: 4px;
+	top: 70px;
+	right: -6px;
+	z-index: 100;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	min-width: 180px;
+	background: $background-default;
+	box-shadow: 0px 1px 2px rgb(0 0 0 / 8%), 0px 4px 12px rgb(0 0 0 / 5%) !important;
+
+	a {
+		display: block;
+		margin: 8px;
+		padding: 16px;
+		text-transform: capitalize;
+		font-size: 1rem;
+		transition: transform 100ms ease-in;
+		transform-origin: left;
+
+		&:hover {
+			transform: scale(1.05);
+			color: $primary;
+		}
+	}
+}
+
+.profile-img {
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+	margin-left: 32px;
+	cursor: pointer;
+}
+
+.links {
+	display: none;
+}
+
+#linksMobile a, fa-icon {
+	margin: 4px 0px;
+	//width: 150px;
+}
+
+#linksMobile {
+	background-color: $background-navigation-mobile-popup;
+	display: flex;
+	flex-direction: column;
+	filter: $shadow;
+	border-radius: $borderRadius;
+	width: 100vw;
+	padding: 32px 0 16px 0;
+	position: fixed;
+	top: 0;
+	right: 0;
+	text-align: center;
+	left: 0;
+}
+
+@media (min-width: $lg) {
+	:host {
+		height: $navHeight;
+		padding: $default-margin 0px;
+	}
+
+	.logo {
+		height: 42px;
+	}
+
+	a,
+	fa-icon {
+		margin-left: 32px;
+		font-size: 1rem;
+	}
+
+	.mobile-nav-icon {
+		display: none;
+	}
+
+	.links {
+		display: flex;
+		align-items: center;
+
+		a {
+			white-space: nowrap;
+		}
+	}
+}
+
+
+.message-container {
+	position: relative;
+}
+
+.unreadCounter {
+	position: absolute;
+	background: $primary;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 12px;
+	border-radius: 50%;
+	color: white;
+	right: -15px;
+	top: 7px;
+}
+
+
+.invitations-left-container {
+	background: $primary;
+	border-radius: 5px;
+	margin-left: 36px;
+	color: white;
+	padding: 6px 12px; display: flex; align-items: center; cursor: pointer;
+	transition: 200ms ease-in all;
+
+
+	&:hover {
+		transform: scale(1.02);
+	}
+}
+
+.left-menu {
+	display: flex;
+	height: 100%;
+	align-items: center;
+}
+
+
+#logo-desktop {
+	width: 100%;
+	max-width: 300px;
+
+	@include respondTo(mobile) {
+		width: unset;
+		max-width: 50vw;
+	}
+}
+
+
+.mobile-title {
+	@include font-size(1.2rem);
+}
+
+.mobile-icons {
+	align-items: center;
+	//display: flex;
+}

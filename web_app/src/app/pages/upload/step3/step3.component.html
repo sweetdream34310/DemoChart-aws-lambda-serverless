@@ -1,0 +1,30 @@
+<form class="uploadWrapper container" [formGroup]="step3" (ngSubmit)="onSubmit()">
+	<div id="image" class="flex col center" (click)="open()">
+		<div class="uploadCover">Upload a cover</div>
+		<img *ngIf="imageSrc" [src]="imageSrc" style="width: 100%; height: 100%" />
+	</div>
+
+	<div id="inputs">
+		<div class="select">
+			<div>genre</div>
+			<app-select
+				[options]="genres$ | async"
+				placeholder="select a genre"
+				formControlName="genre"
+			></app-select>
+		</div>
+
+		<div class="select">
+			<div>mood</div>
+			<app-select
+				[options]="moods$ | async"
+				placeholder="select a mood"
+				formControlName="mood"
+			></app-select>
+		</div>
+
+		<div class="flex ac je">
+			<button class="button-text">next <span class="red">>></span></button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,24 @@
+<div
+	class="demo greyRect pointer"
+	(mouseenter)="setHover()" (mouseleave)="setBlur()"
+	(click)="play($event)"
+	[class]="isPlaying ? 'active' : ''"
+>
+	<div class="play">
+		<img [src]="song.coverUrl" class="song-image"
+				 [class]="isHovered ? 'song-image-hover' : ''"
+				 (error)="song.coverUrl = '../../../assets/cover_placeholder.jpg'"/>
+		<app-icon-play
+			*ngIf="!isPlaying && isHovered"
+			class="playIco icon-18"></app-icon-play>
+		<app-icon-pause
+			*ngIf="isPlaying && isHovered"
+			class="pauseIco icon-18"></app-icon-pause>
+	</div>
+	<div class="demo-content-container">
+		<div class="title">{{ song.title }}</div>
+		<div class="light">
+			{{ song.genreID | labelSearch: 'genres' | async }}
+		</div>
+	</div>
+</div>

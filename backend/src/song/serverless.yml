@@ -1,0 +1,141 @@
+org: juliprop
+app: democharts
+service: backend-song
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # uploads song to s3
+    uploadSong:
+        handler: srcUploadSong.handler
+        iamRoleStatements:
+            - Effect: 'Allow'
+              Action:
+                  - s3:PutObject
+              Resource:
+                  - ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/songs/*
+        events:
+            - http:
+                  path: uploadSong
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/UploadSong.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # uploads song cover to s3
+    uploadCover:
+        handler: srcUploadCover.handler
+        layers:
+            - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+        iamRoleStatements:
+            - Effect: 'Allow'
+              Action:
+                  - s3:PutObject
+              Resource:
+                  - ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/covers/*
+        events:
+            - http:
+                  path: uploadCover
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/UploadCover.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # save song details in DB
+    updateSongDetails:
+        handler: srcUpdateSongDetails.handler
+        events:
+            - http:
+                  path: updateSongDetails
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/UpdateSongDetails.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # get demos of logged in user
+    getDemos:
+        handler: srcGetDemos.handler
+        events:
+            - http:
+                  path: getDemos
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # get demos of logged in user
+    getNextSong:
+        handler: srcGetNextSong.handler
+        events:
+            - http:
+                  path: getNextSong
+                  method: post
+                  cors: true
+                  integration: lambda
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # saves rating in db
+    saveRating:
+        handler: srcSaveRating.handler
+        events:
+            - http:
+                  path: saveRating
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/SaveRating.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # deletes song from db
+    deleteSong:
+        handler: srcDeleteSong.handler
+        events:
+            - http:
+                  path: deleteSong
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/DeleteSong.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: song
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

@@ -1,0 +1,62 @@
+<div class="header full-width">
+	<div class="mydemos-wrapper container">
+		<h1 class="title container">My Demos</h1>
+		<p class="subtitle container">Check out ratings, your demo-playtime and other<br />stats after uploading your first demo on Democharts.</p>
+
+		<div class="overview-container">
+			<div class="overview-item">
+				<h2>{{ demos && demos.length > 0 ? demos.length : '0' }}</h2>
+				<div class="info-text">Total Uploads</div>
+			</div>
+
+
+			<div class="overview-item">
+				<h2>{{ totalAvgPlaytime > 0 ? totalAvgPlaytime : '?' }}</h2>
+				<div class="info-text">Avg Playtime</div>
+			</div>
+
+
+			<div class="overview-item">
+				<h2>{{ totalAvgPlaytime > 0 ? totalAvgRating : '?' }}</h2>
+				<div class="info-text">Avg Rating</div>
+			</div>
+
+			<div class="overview-item">
+				<h2>{{ totalAvgPlaytime > 0 ? totalPlaysOfAllSongs : '?' }}</h2>
+				<div class="info-text">Total Ratings</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<div class="container" style="margin-top: 64px !important;">
+	<div class="demos-wrapper">
+
+		<app-mydemo-box
+			*ngIf="loading"
+			class="demo-box">
+			<app-loading-animation></app-loading-animation>
+		</app-mydemo-box>
+
+		<app-demo
+			*ngFor="let demo of demos$ | async; let i = index"
+			[demo]="demo"
+			[playingUid]="playingUid"
+			(playDemo)="play($event)"
+			(refetchDemos)="getDemos()"
+			class="demo-box"
+		></app-demo>
+
+
+		<app-upload-demo
+			class="demo-box">
+		</app-upload-demo>
+
+		<app-upload-demo
+			class="demo-box"
+			*ngIf="!loading && (!demos || demos.length === 0)">
+		</app-upload-demo>
+
+	</div>

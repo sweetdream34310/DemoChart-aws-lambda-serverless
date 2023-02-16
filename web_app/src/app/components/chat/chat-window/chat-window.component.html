@@ -1,0 +1,43 @@
+<div class="flex ac">
+	<fa-icon id="back" class="pointer" style="margin-right: 16px" [icon]="faBackward" (click)="back()"></fa-icon>
+	<h2 style="margin-top: 4px; cursor: pointer" class="link" (click)="goToProfile(selectedChat.member.uid)">
+		<span *ngIf="selectedChat">{{
+			selectedChat.member.artistName && selectedChat.member.userType === 1
+				? selectedChat.member.artistName
+				: (selectedChat.member.firstName + " " + selectedChat.member.lastName)}}</span>
+		<span *ngIf="!selectedChat">...</span>
+	</h2>
+</div>
+
+<div id="scroll-wrapper">
+	<div #scroll id="scroll">
+		<div
+			#messages
+			class="message"
+			*ngFor="let message of selectedChat?.messages; let i = index"
+			[ngClass]="{ sender: message.senderUid | isMe | async }"
+		>
+			<img
+				class="avatar"
+				(click)="goToProfile(message.senderUid)"
+				[src]="(
+					( (message.senderUid | isMe | async) ? (ownProfileImgSrc | async) : foreignProfileImage(selectedChat.member.profileImage))
+					|| '../../../assets/default-avatar.svg'
+					)"
+				alt="avatar" />
+
+			<div class="text">
+				{{ message.message }}
+			</div>
+
+			<div class="date">{{ message.createdAt | date }}</div>
+		</div>
+	</div>
+</div>
+
+<div id="sendInput">
+	<textarea [(ngModel)]="message" (keyup.enter)="send()" placeholder="Type Your Message Here..."></textarea>
+	<button class="flex ac jc transition" (click)="send()">
+		<img src="../../../../assets/send_arrow.svg" alt="send" />
+	</button>
+</div>

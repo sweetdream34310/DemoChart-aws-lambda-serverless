@@ -1,0 +1,28 @@
+@import 'variables';
+
+:host {
+	display: block;
+}
+
+#waveform {
+	position: relative;
+	background-color: $primary;
+	border-radius: 0;
+	padding-left: 8px;
+	padding-right: 8px;
+
+	::ng-deep wave wave {
+		border-right: none !important;
+	}
+
+	&.hideProgress ::ng-deep wave wave {
+		display: none !important;
+	}
+}
+
+app-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

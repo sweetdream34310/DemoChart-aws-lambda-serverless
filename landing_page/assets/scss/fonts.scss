@@ -1,0 +1,10 @@
+html {
+	@include font-size(1.125rem);
+}
+
+body, input {
+	font-family: 'Josefin Sans', sans-serif;
+}
+h1 {
+	@include font-size(3.5rem);
+}

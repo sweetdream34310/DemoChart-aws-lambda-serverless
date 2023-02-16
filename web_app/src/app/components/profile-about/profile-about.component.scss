@@ -1,0 +1,41 @@
+@import 'colors';
+@import 'variables';
+@import '~rfs/scss';
+
+.info-box {
+	background: $background-item;
+	padding: 16px;
+	border-radius: $borderRadius;
+}
+
+
+.socials {
+	margin-top: 2rem;
+	display: flex;
+	flex-direction: column;
+	.platform {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		margin-bottom: 1rem;
+
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-color: $txt-default;
+		}
+
+		fa-icon {
+			min-width: 3rem;
+			display: flex;
+			justify-content: center;
+			color: $fill-default-icon;
+			@include font-size(1.5rem);
+			margin-right: 0.5rem;
+		}
+
+		div {
+			color: $txt-default;
+		}
+	}
+}

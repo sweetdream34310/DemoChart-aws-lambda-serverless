@@ -1,0 +1,41 @@
+
+<div class="info-box">
+	<h3>{{ profile.userType === 1 ? (profile.genreID | labelSearch: 'genres' | async) : profile.jobTitle }}</h3>
+	<h3>{{profile.countryID | labelSearch: 'countries' | async}}</h3>
+	<div>
+		joined {{ profile.createdAt | timeDiff }} ago
+	</div>
+
+	<div class="socials">
+		<a
+			*ngFor="let social of profile.socialMedias"
+			class="platform"
+			[href]="social.link"
+			target="_blank"
+		>
+			<ng-container [ngSwitch]="social.platform">
+				<fa-icon
+					*ngSwitchCase="'facebook'"
+					[icon]="faFacebookF"
+				></fa-icon>
+				<fa-icon
+					*ngSwitchCase="'instagram'"
+					[icon]="faInstagram"
+				></fa-icon>
+				<fa-icon
+					*ngSwitchCase="'soundcloud'"
+					[icon]="faSoundcloud"
+				></fa-icon>
+				<fa-icon
+					*ngSwitchCase="'spotify'"
+					[icon]="faSpotify"
+				></fa-icon>
+				<fa-icon
+					*ngSwitchDefault
+					[icon]="faCircle"
+				></fa-icon>
+			</ng-container>
+			<div>{{ social.linkText }}</div>
+		</a>
+	</div>
+</div>

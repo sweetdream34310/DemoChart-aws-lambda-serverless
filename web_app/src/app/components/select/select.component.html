@@ -1,0 +1,30 @@
+<input
+	#origin
+	[formControl]="searchControl"
+	[placeholder]="placeholder"
+	(focus)="open(origin, dropdown)"
+	class="custom-select"
+	[ngClass]="{ roundedBlack: roundedBlack }"
+/>
+
+<ng-template #dropdown>
+	<cdk-virtual-scroll-viewport
+		id="dropdown"
+		[ngClass]="{ dark: dark }"
+		itemSize="32"
+		[style.height.px]="8 * 32"
+	>
+		<div *ngIf="options.length === 0" class="option">
+			No results found...
+		</div>
+
+		<div
+			*cdkVirtualFor="let option of options"
+			class="option"
+			[ngClass]="{ active: isActive(option) }"
+			(click)="select(option)"
+		>
+			{{ option[1] }}
+		</div>
+	</cdk-virtual-scroll-viewport>
+</ng-template>

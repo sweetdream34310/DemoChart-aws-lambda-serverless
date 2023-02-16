@@ -1,0 +1,31 @@
+.modal {
+	width: 100%;
+	max-width: 600px;
+}
+
+.modal-title {
+	text-align: center;
+	font-size: 36px;
+	margin-top: 24px;
+}
+
+.modal-content {
+}
+
+.modal-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& button:not(:first-child) {
+		margin-left: 1rem;
+	}
+}
+
+.modal-close {
+}
+
+
+.cdk-overlay-dark-backdrop {
+	background: rgba(0, 0, 0, .7)
+}

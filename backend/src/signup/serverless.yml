@@ -1,0 +1,96 @@
+org: juliprop
+app: democharts
+service: backend-signup
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    srcPreSignup:
+        handler: srcPreSignup.handler
+        vpc:
+            securityGroupIds: []
+            subnetIds: []
+        iamRoleStatements:
+            - Effect: 'Allow'
+              Action:
+                  - lambda:InvokeFunction
+              Resource: '*'
+        environment:
+            addUserToDB: '${self:service}-${self:provider.stage}-addUserToDB'
+            sendMail: '${self:service}-${self:provider.stage}-sendMail'
+        events:
+            - cognitoUserPool:
+                  pool: ${self:custom.globals.backendUserpoolName}
+                  trigger: PreSignUp
+                  existing: true
+
+    addUserToDB:
+        handler: srcAddUserToDB.handler
+
+    customConfirmationMail:
+        handler: srcCustomConfirmationMail.handler
+        events:
+            - cognitoUserPool:
+                  pool: ${self:custom.globals.backendUserpoolName}
+                  trigger: CustomMessage
+                  existing: true
+
+    postConfirmation:
+        timeout: 30
+        handler: srcPostConfirmation.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        environment:
+            COGNITO_POOL_ID: ${self:custom.globals.backendUserpoolId}
+        events:
+            - cognitoUserPool:
+                  pool: ${self:custom.globals.backendUserpoolName}
+                  trigger: PostConfirmation
+                  existing: true
+
+    postConfirmationHttp:
+        handler: srcPostConfirmationHttp.handler
+        events:
+          - http:
+              path: postUserConfirmed
+              method: post
+              cors: true
+              integration: lambda
+
+
+    userExists:
+        handler: srcUserExists.handler
+        iamRoleStatements:
+            -   Effect: 'Allow'
+                Action:
+                    - cognito-idp:AdminGetUser
+                Resource:
+                    - arn:aws:cognito-idp:eu-central-1:716337769397:userpool/eu-central-1_wB8KxCHC2
+        events:
+            - http:
+                  path: userExists
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/UserExists.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: signup
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

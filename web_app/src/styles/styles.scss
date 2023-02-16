@@ -1,0 +1,116 @@
+@import 'variables';
+@import 'utils';
+@import 'layout';
+@import 'typo';
+@import 'modal';
+@import 'checkbox';
+@import 'buttons';
+@import 'gradient';
+@import 'colors';
+@import '~@angular/cdk/overlay-prebuilt.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+
+body {
+	margin: 0px;
+	overflow-x: hidden;
+	background: $background-default;
+	user-select: none;
+}
+
+body,
+input,
+button,
+textarea {
+	font-family: 'Josefin Sans', sans-serif;
+	color: $txt-default;
+}
+
+* {
+	outline: none !important;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid $textLight;
+}
+
+//img {
+//	width: 100%;
+//	height: auto;
+//}
+
+
+
+button.outline {
+	width: 100%;
+	color: white;
+	background: none;
+	border: 3px solid white;
+	border-radius: 32px;
+	padding: 16px;
+	max-width: 350px;
+	font-size: 14px;
+}
+
+button.solid {
+	background-color: $bgLight;
+
+	&:hover {
+		background-color: $bgLight2;
+	}
+}
+
+
+input, select, textarea {
+	background: $background-input;
+}
+
+.link {
+	cursor: pointer;
+	display: inline-block;
+	color: $txt-link;
+	transition: transform 100ms ease-in;
+	text-decoration: none;
+	transform-origin: left;
+
+
+	&.underlined {
+		border-bottom: 2px solid white;
+
+		&:hover {
+			border-bottom: 2px solid $primary;
+		}
+	}
+
+	&:hover {
+		color: $primary;
+		transform: scale(1.02);
+	}
+}
+
+.icon-link {
+	transform-origin: center;
+	cursor: pointer;
+	transition: transform 100ms ease-in;
+
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+
+.icon-24 {
+	svg {
+		width: 24px !important;
+		height: 24px !important;
+	}
+}
+
+
+.icon-18 {
+	svg {
+		width: 18px !important;
+		height: 18px !important;
+	}
+}

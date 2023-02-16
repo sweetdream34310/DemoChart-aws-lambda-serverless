@@ -1,0 +1,43 @@
+@import 'variables';
+@import 'colors';
+@import '~rfs/scss';
+
+.modal-title {
+	margin-bottom: 36px;
+}
+
+
+.checkbox-container {
+	position: relative;
+	height: 32px;
+	margin-bottom: 8px;
+	display: flex;
+	align-items: center;
+}
+
+.validation-hint {
+	margin-bottom: 16px;
+	color: $primary;
+	text-align: center;
+}
+
+.custom-input, .feedback-textarea {
+	border-radius: 5px;
+	border:none;
+	height: 48px;
+	font-size: 18px;
+	background: $background-input;
+	width: 100%;
+	padding: 0 16px;
+	box-sizing: border-box;
+}
+
+
+.feedback-textarea {
+	margin-top: 16px;
+	margin-bottom: 16px;
+	min-height: 120px;
+	resize: none;
+	padding-top: 16px;
+}
+

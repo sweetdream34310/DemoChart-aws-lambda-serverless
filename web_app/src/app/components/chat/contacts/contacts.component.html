@@ -1,0 +1,31 @@
+<h1 id="title" class="desktop-only">Conversations</h1>
+
+<input id="search" type="text" placeholder="Search conversations" />
+
+<div id="recent-chats">Recent chats</div>
+
+<div id="scroll-wrapper">
+	<div id="scroll">
+		<div
+			class="contact"
+			[class]="selectedChat && chat.member.uid === selectedChat.member.uid
+				? 'active'
+				: isChatUnread(chat.uid) ? 'unread' : ''"
+			*ngFor="let chat of sortedChats; trackBy: trackByChats"
+			(click)="openChat(chat)"
+		>
+			<img class="avatar" [src]="(getProfileImage(chat.member.profileImage)) || '../../../assets/default-avatar.svg'" alt="avatar" />
+			<div class="text-box">
+				<div class="name">{{
+					chat.member.artistName && chat.member.userType === 1
+						? chat.member.artistName
+						: (chat.member.firstName + " " + chat.member.lastName)
+					}}</div>
+				<div class="last-msg">{{ chat.messages[chat.messages.length - 1]?.message }}</div>
+			</div>
+<!--			<div *ngIf="isChatUnread(chat.uid)" class="new">-->
+<!--				new-->
+<!--			</div>-->
+		</div>
+	</div>
+</div>

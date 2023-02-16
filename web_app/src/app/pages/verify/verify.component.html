@@ -1,0 +1,8 @@
+<div *ngIf="loading">
+	<app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!loading ">
+	<h1>{{message}}</h1>
+	<button *ngIf="!error" button-prim routerLink="'/login'">Login</button>
+</div>

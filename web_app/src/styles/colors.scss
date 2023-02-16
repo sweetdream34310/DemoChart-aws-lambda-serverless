@@ -1,0 +1,81 @@
+/**
+ * New Color Sheet. Move from colors from variables.scss to this file
+ */
+
+/**
+ * Oage Colors
+ */
+$primary: #d54942;
+$secondary: #2a276d;
+
+/**
+ * Do not use them outside of this file
+ */
+$black-0: #000;
+$black-100: #0c0c0c;
+$black-200: #141414;
+$black-300: #1a1a1a;
+$black-400: #282828;
+$black-500: #323232;
+$black-600: #4d4d4d;
+$black-700: #898989;
+
+
+$background-default: $black-300;
+$background-deep: $black-100;
+$background-navigation: $black-100;
+$background-navigation-mobile-popup: $black-300;
+
+/**
+ * No input box, but a box
+ */
+$background-item: $black-100;
+$background-item-active: $black-400;
+$background-item-hover: $black-400;
+$background-item-disabled: $black-600;
+
+/**
+ * Box within box
+ */
+$background-item-2: $black-400;
+
+/**
+ * Select, textbox, textarea,..
+ */
+$background-input: $black-500;
+$background-input-dark: $black-100;
+
+/**
+ * Buttons
+ */
+// Default Button
+$button-default-background: $black-100;
+$button-default-background-hover: $primary;
+$button-default-background-disabled: $black-100;
+$button-default-color-disabled: $black-600;
+
+// Default Button with image
+$button-text-image-background: $black-100;
+$button-text-image-icon: white;
+$button-text-image-text: white;
+$button-text-image-background-hover: $primary;
+
+// Button accent
+$button-accent-background: $primary;
+
+/**
+ * Texts
+ */
+$txt-default: white;
+$txt-input-label: $black-700;
+$txt-input: white;
+$txt-link: white;
+$txt-link-decent: #6f6f6f;
+
+/**
+ * Others
+ */
+$line-color: black;
+$fill-default-icon: white;
+$background-select-dropdown: $black-700;
+

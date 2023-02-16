@@ -1,0 +1,126 @@
+org: juliprop
+app: democharts
+service: backend-profile
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+
+functions:
+    # gets information about the logged in user
+    getUser:
+        handler: srcGetUser.handler
+        events:
+            - http:
+                  path: getUser
+                  method: get
+                  cors: true
+                  integration: lambda
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # gets public profile of a user
+    getProfile:
+        handler: srcGetProfile.handler
+        events:
+            - http:
+                  path: getProfile
+                  method: get
+                  cors: true
+                  integration: lambda
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # updates profile
+    updateProfile:
+        handler: srcUpdateProfile.handler
+        events:
+            - http:
+                  path: update
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/UpdateProfile.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # checks if name is unique
+    validateName:
+        handler: srcValidateName.handler
+        events:
+            - http:
+                  path: validateName
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/ValidateName.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # uploads profile pciture to s3
+    uploadProfilePic:
+        handler: srcUploadProfilePic.handler
+        layers:
+            - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+        iamRoleStatements:
+            - Effect: 'Allow'
+              Action:
+                  - s3:PutObject
+              Resource:
+                  - ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profilePics/*
+        events:
+            - http:
+                  path: uploadProfilePic
+                  method: post
+                  cors: true
+                  integration: lambda
+                  #request:
+                      #passThrough: NEVER
+                      #schema:
+                          #'application/json': ${file(schema/UploadProfilePic.json)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # uploads profile header to s3
+    uploadProfileHeader:
+        handler: srcUploadProfileHeader.handler
+        layers:
+            - arn:aws:lambda:eu-central-1:716337769397:layer:sharp:2
+        iamRoleStatements:
+            -   Effect: 'Allow'
+                Action:
+                    - s3:PutObject
+                Resource:
+                    - ${output::${self:provider.stage}::backend-s3Buckets.DataBucketArn}/profileHeaders/*
+        events:
+            -   http:
+                    path: uploadProfileHeader
+                    method: post
+                    cors: true
+                    integration: lambda
+                    #request:
+                        #passThrough: NEVER
+                        #schema:
+                           # 'application/json': ${file(schema/UploadProfileHeader.json)}
+                    #response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                    authorizer: ${self:custom.globals.authorizer}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: profile
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

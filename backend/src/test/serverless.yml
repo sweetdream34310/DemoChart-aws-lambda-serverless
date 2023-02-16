@@ -1,0 +1,44 @@
+org: juliprop
+app: democharts
+service: test
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+    vpc: ${file(../shared/globalYmls/vpc.yml)}
+    iamRoleStatements:
+        -   Effect: 'Allow'
+            Action:
+                - cognito-idp:AdminGetUser
+            Resource:
+                - ${output::${self:provider.stage}::backend-userpool.Arn}
+
+functions:
+    test:
+        handler: srcTest.handler
+        events:
+            - http:
+                  path: test
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/Test.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: test
+    customDomain: ${file(../shared/globalYmls/domain.yml)}
+    webpack:
+        webpackConfig: '../../webpack.config.js'

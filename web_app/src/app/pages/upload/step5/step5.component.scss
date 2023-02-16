@@ -1,0 +1,62 @@
+@import 'variables';
+@import '~rfs/scss';
+@import "responsive";
+
+#packages {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+	overflow-y: auto;
+
+	@include respondTo(mobile) {
+		margin-top: 24px;
+		margin-bottom: 96px;
+		height: fit-content;
+	}
+
+	@media (min-width: $md) {
+		flex-direction: row;
+	}
+
+	.package {
+		flex: 1;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		height: 20rem;
+
+		padding: 1.5rem;
+		box-sizing: border-box;
+
+		border-radius: $borderRadius;
+		background-color: $transparentBg;
+		backdrop-filter: $blur;
+
+		&:nth-child(2) {
+			margin: 1rem 0;
+			@media (min-width: $md) {
+				margin: 0 1rem;
+			}
+			background-color: $primaryTrans;
+		}
+
+		.packageName {
+			margin-bottom: 1.5rem;
+		}
+
+		.packageDescription {
+			text-align: center;
+			margin-bottom: 1.5rem;
+		}
+
+		.packagePrice {
+			font-weight: 600;
+			@include font-size(2rem);
+			margin-bottom: 1.5rem;
+		}
+	}
+}

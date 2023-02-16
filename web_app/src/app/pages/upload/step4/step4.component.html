@@ -1,0 +1,64 @@
+<div *ngIf="song$ | async as song" id="summary" class="uploadWrapper container">
+	<div class="summary-container">
+		<img *ngIf="song.cover" id="cover" [src]="song.cover" alt="cover" />
+		<img *ngIf="!song.cover" id="cover" src="../assets/cover_placeholder.jpg" alt="cover" />
+
+		<div id="details">
+			<div id="title" class="input">{{ song.title }}</div>
+
+			<div id="waveformWrapper">
+				<button id="play" (click)="togglePlay()">
+					<fa-icon
+						*ngIf="!(playing | async); else playPause"
+						class="playIco"
+						[icon]="faPlay"
+					></fa-icon>
+					<ng-template #playPause>
+						<fa-icon [icon]="faPause"></fa-icon>
+					</ng-template>
+				</button>
+
+				<app-waveform
+					#waveform
+					[file]="song.demoClip"
+					class="w100"
+					(component)="waveformInit($event)"
+				></app-waveform>
+			</div>
+
+			<div id="row">
+				<div class="input">
+					{{ song.moodID | labelSearch: 'moods' | async }}
+				</div>
+				<div class="input">
+					{{ song.genreID | labelSearch: 'genres' | async }}
+				</div>
+			</div>
+
+			<label for="agreement">
+				<!--			<input-->
+				<!--				type="checkbox"-->
+				<!--				[formControl]="agreement"-->
+				<!--				name="agreement"-->
+				<!--				id="agreement"-->
+				<!--				[value]="true"-->
+				<!--			/>-->
+				<!--			<span [ngClass]="{ hint: submitted && agreement.invalid }">-->
+				<!--				I agree and certify that i am the owner of the uploaded demo-->
+				<!--			</span>-->
+
+				<label class="checkbox-description pointer" style="margin-top: 16px">
+					I agree and certify that i am the owner of the uploaded demo
+					<input type="checkbox" class="pointer checkbox" (click)="agreement = true"/>
+					<span class="checkmark"></span>
+				</label>
+			</label>
+
+			<div class="flex ac je">
+				<button class="button-text" (click)="next()">
+					next <span class="red">>></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

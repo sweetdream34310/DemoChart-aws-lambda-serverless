@@ -1,0 +1,39 @@
+@import "variables";
+@import '~rfs/scss';
+@import "colors";
+@import "responsive";
+
+:host {
+	flex: 1;
+}
+
+.profile-container {
+	margin-top: 32px;
+	display: flex;
+	flex-wrap: wrap;
+	margin: -8px;
+
+	@include respondTo(mobile) {
+		display: block;
+	}
+}
+
+.profile {
+	margin: 8px;
+}
+
+.no-artists-yet {
+	margin-top: 32px;
+}
+
+.app-spinner {
+	margin-top: 32px;
+}
+
+
+.section-heading {
+	padding: 64px 0;
+	background: $background-deep;
+	margin-top: 32px;
+	margin-bottom: 32px;
+}

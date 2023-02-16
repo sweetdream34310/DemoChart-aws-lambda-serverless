@@ -1,0 +1,35 @@
+{
+	"$schema": "./node_modules/@angular/service-worker/config/schema.json",
+	"appData": {
+		"version": "V0.1.0",
+		"changes": "dude pwa funktioniert"
+	},
+	"index": "/index.html",
+	"assetGroups": [
+		{
+			"name": "app",
+			"installMode": "prefetch",
+			"updateMode": "prefetch",
+			"resources": {
+				"files": [
+					"/favicon.png",
+					"/index.html",
+					"/manifest.webmanifest",
+					"/*.css",
+					"/*.js"
+				]
+			}
+		},
+		{
+			"name": "assets",
+			"installMode": "lazy",
+			"updateMode": "prefetch",
+			"resources": {
+				"files": [
+					"/assets/**",
+					"/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+				]
+			}
+		}
+	]
+}

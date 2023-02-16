@@ -1,0 +1,46 @@
+{
+	"name": "democharts_landing",
+	"version": "1.0.0",
+	"description": "Democharts Landing Page",
+	"author": "Simon Wesp, Markus Salmhofer, Julian Propst",
+	"private": true,
+	"scripts": {
+		"devlocal": "set NODE_ENV=development&& nuxt",
+		"dev": "nuxt generate",
+		"crocs": "nuxt --hostname 127.0.0.1 --port 8000",
+		"build": "nuxt build",
+		"start": "nuxt start --hostname 127.0.0.1 --port 8000",
+		"generate": "NODE_ENV=production && nuxt generate",
+		"devMobile": "nuxt --hostname 0.0.0.0 --port 8000"
+	},
+	"dependencies": {
+		"@nuxt/bridge": "^0.10.1",
+		"@nuxtjs/axios": "^5.0.0",
+		"@nuxtjs/google-analytics": "^2.4.0",
+		"amazon-cognito-identity-js": "^4.3.1",
+		"lodash": "^4.17.21",
+		"nuxt": "^2.15.4",
+		"spinkit": "^1.2.5",
+		"ts-loader": "^8.2.0",
+		"vue-lottie": "^0.2.1",
+		"vue-select": "^3.10.3",
+		"vuelidate": "^0.7.5",
+		"typescript": "4.6.4"
+	},
+	"devDependencies": {
+		"@nuxt/typescript-build": "^0.6.0",
+		"@nuxtjs/sitemap": "^2.4.0",
+		"@nuxtjs/style-resources": "^1.0.0",
+		"@typescript-eslint/eslint-plugin": "^3.4.0",
+		"@typescript-eslint/parser": "^3.4.0",
+		"eslint": "^7.3.1",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-vue": "^7.0.0-alpha.6",
+		"node-sass": "^4.14.1",
+		"prettier": "2.0.5",
+		"rfs": "^9.0.3",
+		"sass-loader": "^10.1.1",
+		"sass-resources-loader": "^2.0.3",
+		"vue-eslint-parser": "^7.1.0"
+	}
+}

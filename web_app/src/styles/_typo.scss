@@ -1,0 +1,21 @@
+@import '~rfs/scss';
+
+h1,
+h2,
+h3 {
+	@include font-size(3rem);
+	margin: 0px;
+	margin-bottom: 0.8rem;
+}
+
+h2 {
+	@include font-size(2rem);
+}
+
+h3 {
+	@include font-size(1.3rem);
+}
+
+p {
+	margin: 0;
+}

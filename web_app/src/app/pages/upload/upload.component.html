@@ -1,0 +1,48 @@
+<app-stepper
+	#stepper
+	id="stepper"
+	class="full-width main-container full-height colorful"
+	[header]="true"
+	linear
+	[selectedIndex]="index"
+>
+	<cdk-step label="upload">
+		<app-step1
+			*ngIf="index === 0"
+			class="h100"
+			[stepper]="stepper"
+		></app-step1>
+	</cdk-step>
+
+	<cdk-step label="title">
+		<app-step2
+			*ngIf="index === 1"
+			class="h100"
+			[stepper]="stepper"
+		></app-step2>
+	</cdk-step>
+
+	<cdk-step label="cover">
+		<app-step3
+			*ngIf="index === 2"
+			class="h100"
+			[stepper]="stepper"
+		></app-step3>
+	</cdk-step>
+
+	<cdk-step label="summary">
+		<app-step4
+			*ngIf="index === 3"
+			class="h100"
+			[stepper]="stepper"
+		></app-step4>
+	</cdk-step>
+
+	<cdk-step label="checkout">
+		<app-step5
+			*ngIf="index === 4"
+			class="lastStep"
+			[stepper]="stepper"
+		></app-step5>
+	</cdk-step>
+</app-stepper>

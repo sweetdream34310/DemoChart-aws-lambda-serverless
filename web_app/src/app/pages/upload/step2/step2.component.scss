@@ -1,0 +1,90 @@
+@import 'variables';
+@import '~rfs/scss';
+
+:host {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+::ng-deep.wavesurfer-region {
+	background-color: transparentize(black, 0.4) !important;
+	backdrop-filter: $blur;
+	z-index: 1 !important;
+	border-radius: $borderRadius;
+}
+
+::ng-deep wave {
+	height: 5rem !important;
+}
+
+#title {
+	height: 5rem;
+	background-color: transparentize($primary, 0.5);
+	padding: 0 1rem;
+	border: none;
+	width: 100%;
+	box-sizing: border-box;
+	border-radius: $borderRadius;
+	backdrop-filter: $blur;
+	@include font-size(2rem);
+	color: white;
+	margin-bottom: 3rem;
+
+	&::placeholder {
+		color: white;
+	}
+
+	~ .hint {
+		position: absolute;
+		left: 0;
+		bottom: 23px;
+		color: $primary;
+	}
+}
+
+.label {
+	margin-bottom: 0.4rem;
+}
+
+#waveformWrapper {
+	position: relative;
+	margin-bottom: 1rem;
+
+	#play {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 100%;
+		border: none;
+		position: absolute;
+		left: -4rem;
+		top: 50%;
+		transform: translateY(-50%);
+		cursor: pointer;
+		background-color: white;
+		@include font-size(1.2rem);
+		color: $primary;
+
+		.playIco {
+			margin-left: 3px;
+		}
+	}
+}
+
+#progressBar {
+	border-radius: $borderRadius;
+	background-color: $transparentBg;
+	height: 6rem;
+	overflow: hidden;
+	margin-bottom: 1rem;
+
+	> div {
+		height: 100%;
+		border-radius: $borderRadius;
+		background-color: $primaryTrans;
+		transition: width 0.5s ease-in-out;
+	}
+}

@@ -1,0 +1,140 @@
+@import 'variables';
+@import 'colors';
+@import '~rfs/scss';
+
+
+.button {
+	min-height: 50px;
+	min-width: 200px;
+	transition: transform 100ms ease-in;
+	border: 2px solid transparent;
+	border-radius: 45px;
+	padding: 0 20px;
+	background: none;
+
+	&:enabled {
+		cursor: pointer;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+	}
+
+
+	&[button-prim] {
+		border-color: #000;
+		color: #000;
+
+		&:hover:enabled {
+			background-color: #000;
+			color: white;
+		}
+	}
+
+	&[button-sec] {
+		&:hover:enabled {
+			background-color: $borderColor;
+		}
+	}
+
+	&[button-ter] {
+		color: white;
+		background-color: $transparentBg;
+		&:hover:enabled {
+			background-color: $primaryTrans;
+		}
+	}
+
+	&[button-kathrin] {
+
+		background: $button-default-background;
+		color: white;
+
+		&:disabled {
+			background: $button-default-background-disabled;
+			color: $button-default-color-disabled;
+		}
+
+		&:hover:enabled {
+			background-color: $button-default-background-hover;
+		}
+	}
+
+
+	&[button-accent] {
+		background: $button-accent-background;
+		transition: 200ms ease all;
+
+		&:hover:enabled {
+			transform: scale(1.02);
+			box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 4px;
+		}
+	}
+	&[button-kathrin-grey] {
+
+		background: $button-background-neutral;
+		color: black;
+
+		&:hover:enabled {
+			background-color: $primaryLight;
+			color: white;
+		}
+	}
+
+	&[button-icon] {
+		background: $button-text-image-background;
+		fill: $button-text-image-icon;
+		color: $button-text-image-text;
+		display: flex;
+		align-items: center;
+		padding: 12px 24px;
+		min-width: unset;
+		@include font-size(1.2rem);
+
+		&.solid {
+			background-color: $button-text-image-background-hover;
+		}
+		&.solid-neutral {
+			background-color: $background-item;
+		}
+
+
+		&.small {
+			padding: 4px 8px;
+			min-height: unset;
+			@include font-size(1rem);
+
+			svg {
+				width: 18px;
+				height: 18px;
+			}
+		}
+
+		svg {
+			transition: $transition;
+			margin-right: 8px;
+			@include font-size(1.2rem);
+		}
+
+		&.icon-only {
+			svg {
+				margin-right: 0;
+			}
+		}
+
+		&:hover:enabled {
+			background-color: $button-text-image-background-hover;
+			color: white;
+
+			transform: scale(1.02);
+
+			svg {
+				fill: white;
+			}
+		}
+	}
+
+	& app-spinner {
+		height: 20px;
+	}
+}

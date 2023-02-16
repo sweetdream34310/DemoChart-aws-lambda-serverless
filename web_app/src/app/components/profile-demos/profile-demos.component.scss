@@ -1,0 +1,12 @@
+@import "colors";
+@import "variables";
+
+.greyRect {
+	background-color: $background-item;
+	border-radius: $borderRadius;
+	padding: 2rem;
+}
+
+.greyRect:hover {
+	background-color: $background-item-hover;
+}

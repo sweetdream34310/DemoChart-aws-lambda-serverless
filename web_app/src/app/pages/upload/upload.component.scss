@@ -1,0 +1,99 @@
+@import 'variables';
+@import 'responsive';
+@import '~rfs/scss';
+
+:host {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+
+	&::ng-deep {
+		color: white;
+
+		//.next {
+		//	display: flex;
+		//	align-items: center;
+		//	justify-content: center;
+		//	border: none;
+		//	color: white;
+		//	background-color: transparent;
+		//	padding: 0.8rem 2rem;
+		//	transition: $transition;
+		//	border-radius: $borderRadius;
+		//	@include font-size(1.2rem);
+		//	text-transform: uppercase;
+		//
+		//	span {
+		//		margin-bottom: 0.3rem;
+		//		margin-left: 0.4rem;
+		//	}
+		//
+		//	&:hover {
+		//		background-color: rgba(255, 255, 255, 0.2);
+		//		backdrop-filter: $blur;
+		//	}
+		//}
+
+		.uploadWrapper {
+			margin: auto;
+			max-width: 1000px;
+			box-sizing: border-box;
+
+			@media (min-width: $md) {
+				//padding-bottom: 7rem;
+			}
+		}
+	}
+}
+
+#stepper {
+	flex: 1 1 auto;
+	display: block;
+	border-radius: $borderRadius;
+	box-sizing: border-box;
+
+
+}
+
+#main {
+	padding: 0;
+}
+
+
+
+.colorful {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+//
+//.colorful-on-hover {
+//	animation: gradient 15s ease infinite !important;
+//
+//	&:hover {
+//		color: white !important;
+//		background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important;
+//		background-size: 400% 400% !important;
+//		animation: gradient 15s ease infinite !important;
+//	}
+//}
+
+.lastStep {
+	height: 100%;
+
+	@include respondTo(mobile){
+		height: unset;
+	}
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 50% 50%;
+	}
+	50% {
+		background-position: 70% 50%;
+	}
+	100% {
+		background-position: 50% 50%;
+	}
+}

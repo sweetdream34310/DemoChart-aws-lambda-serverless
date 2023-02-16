@@ -1,0 +1,5 @@
+domainName: ${self:custom.globals.domain}
+stage: ${self:provider.stage}
+basePath: ${self:custom.basePath}
+createRoute53Record: true
+autoDomain: true

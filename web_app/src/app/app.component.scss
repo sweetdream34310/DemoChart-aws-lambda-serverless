@@ -1,0 +1,18 @@
+@import 'variables';
+
+:host {}
+
+#main {
+	margin-top: $navHeightMobile;
+	margin-bottom: $toolbarHeight;
+
+	@media (min-width: $lg) {
+		margin-top: $navHeight;
+		margin-bottom: 0;
+	}
+
+}
+
+#footer {
+	//grid-area: footer;
+}

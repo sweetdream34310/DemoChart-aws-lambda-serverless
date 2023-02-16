@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "UpdateSongDetails",
+	"type": "object",
+	"properties": {
+		"songID": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string"
+		},
+		"genreID": {
+			"type": "number"
+		},
+		"moodID": {
+			"type": "number"
+		}
+	},
+	"required": ["songID", "title", "genreID", "moodID"]
+}

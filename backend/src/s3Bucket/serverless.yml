@@ -1,0 +1,52 @@
+org: juliprop
+app: democharts
+service: backend-s3Buckets
+
+provider:
+    name: aws
+    region: eu-central-1
+    runtime: nodejs14.x
+
+resources:
+    Resources:
+        DataBucket:
+            Type: AWS::S3::Bucket
+            Properties:
+                CorsConfiguration:
+                    CorsRules:
+                        - AllowedOrigins:
+                              - '*'
+                          AllowedHeaders:
+                              - '*'
+                          AllowedMethods:
+                              - GET
+                          MaxAge: 3000
+
+        ProfilePicBucketAllowPublicReadPolicy:
+            Type: AWS::S3::BucketPolicy
+            Properties:
+                Bucket: !Ref DataBucket
+                PolicyDocument:
+                    Version: '2012-10-17'
+                    Statement:
+                        - Effect: Allow
+                          Action:
+                              - 's3:GetObject'
+                          Resource:
+                              - !Join [
+                                    '/',
+                                    [!GetAtt DataBucket.Arn, 'covers/*'],
+                                ]
+                              - !Join [
+                                    '/',
+                                    [!GetAtt DataBucket.Arn, 'profilePics/*'],
+                                ]
+                              - !Join ['/', [!GetAtt DataBucket.Arn, 'songs/*']]
+                              - !Join ['/', [!GetAtt DataBucket.Arn, 'profileHeaders/*']]
+                              - !Join ['/', [!GetAtt DataBucket.Arn, 'invoices/*']]
+                              - !Join ['/', [!GetAtt DataBucket.Arn, 'marketplace/*']]
+                          Principal: '*'
+
+outputs:
+    DataBucketArn: !GetAtt DataBucket.Arn
+    DataBucketName: !Ref DataBucket

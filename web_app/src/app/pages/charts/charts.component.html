@@ -1,0 +1,128 @@
+<div id="unlock" class="main-container full-height" *ngIf="(ratings24H$ | async) < 10">
+
+	<img src="../../../assets/locked-animation.gif" class="locked" />
+
+	<div>unlock Chartlist</div>
+	<p>Start rating 10 demos with Democharts!</p>
+
+	<button routerLink="/demoplayer" class="button outline charts-unlock-button pointer">Start</button>
+
+	<div *ngIf="(ratings24H$ | async) > 0" class="already-rated-container">
+		<p><span class="already-rated-highlight">{{ ratings24H$ | async }}</span>/10</p>
+		<p class="already-rated-description">demos already rated</p>
+	</div>
+
+</div>
+
+<div *ngIf="(ratings24H$ | async) >= 10">
+	<ng-template #loading>
+		<app-page-loading-animation></app-page-loading-animation>
+	</ng-template>
+
+	<div *ngIf="chartsFiltered; else loading">
+		<div id="header" class="full-width">
+			<img class="image-background" [src]="chartsFiltered.length > 0 && chartsFiltered[0].coverUrl" />
+			<div class="red-overlay"></div>
+			<div class="container text-overlay">
+				<div class="desktop-only">
+					<img class="nr1-cover" [src]="chartsFiltered.length > 0 && chartsFiltered[0].coverUrl" />
+				</div>
+				<div class="title-container">
+					<div id="title">
+						<h1>Top 100 Charts</h1>
+						<p>Check out the most talented newcomer<br />Artists on Democharts.org</p>
+					</div>
+				</div>
+
+				<div id="filter">
+					<app-select
+						class="custom-input"
+						[options]="genres"
+						[roundedBlack]="true"
+						placeholder="All genres"
+						[formControl]="genre"
+					></app-select>
+
+					<app-select
+						class="custom-input"
+						[roundedBlack]="true"
+						[options]="countries"
+						placeholder="All countries"
+						[formControl]="country"
+					></app-select>
+				</div>
+			</div>
+		</div>
+
+		<table id="charts" class="w100 container" cellspacing="0">
+			<tr class="desktop-only table-row">
+				<th></th>
+				<th>Rank</th>
+
+				<th>Artist</th>
+				<th>Title</th>
+				<th>Genre</th>
+				<th>Country</th>
+				<th>Avg. Playtime</th>
+				<th style="text-align: right">Rating</th>
+			</tr>
+			<tr
+				class="songRows container pointer"
+				*ngFor="
+					let song of chartsFiltered;
+					let i = index;
+					let odd = odd
+				"
+				[ngClass]="{ odd: odd }"
+				(click)="togglePlay(song)"
+			>
+				<td>
+					<div class="playPause">
+						<img
+							class="artistImg"
+							[src]="song.coverUrl"
+							[alt]="song.artist.slug"
+							(error)="song.coverUrl = '../../../assets/cover_placeholder.jpg'"
+						/>
+						<fa-icon
+							*ngIf="playingUid === song.uid"
+							class="playPauseIco"
+							[icon]="faPause"
+						></fa-icon>
+						<fa-icon
+							*ngIf="playingUid !== song.uid"
+							class="playPauseIco"
+							[icon]="faPlay"
+						></fa-icon>
+					</div>
+				</td>
+				<td class="bold desktop-only">{{ song.chartPosition }}</td>
+				<td
+					class="desktop-only artist bold"
+					[routerLink]="['/profile', song.artist.slug]"
+				>
+					{{ song.artist.artistName ? song.artist.artistName : (song.artist.firstName + '' + song.artist.lastName )}}
+				</td>
+				<td>
+					<div class="song-artist-wrapper">
+						<div class="title">{{ song.title }}</div>
+						<div class="mobile-only mobile-artist-name" [routerLink]="['/profile', song.artist.slug]">{{ song.artist.artistName ? song.artist.artistName : (song.artist.firstName + '' + song.artist.lastName )}}</div>
+					</div>
+				</td>
+				<td class="desktop-only">{{ song.genreID | labelSearch: 'genres' | async }}</td>
+				<td class="desktop-only">{{ song.countryID | labelSearch: 'countries' | async }}</td>
+				<td class="desktop-only">{{ song.plays }}</td>
+				<td class="bold" style="text-align: right;">
+					<div style="display: flex; align-items: center; justify-content: flex-end">
+						<app-icon-star class="mobile-only mobile-star-icon"></app-icon-star>
+						<div style="margin-left: 4px">{{ song.rating | number: '1.1-1' }}</div>
+					</div>
+				</td>
+			</tr>
+
+			<div *ngIf="!chartsFiltered.length">
+				There are no songs with your selected filter
+			</div>
+		</table>
+	</div>
+</div>

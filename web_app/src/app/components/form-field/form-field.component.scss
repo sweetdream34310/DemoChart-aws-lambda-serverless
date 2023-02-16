@@ -1,0 +1,56 @@
+@import 'variables';
+@import '~rfs/scss';
+
+app-form-field {
+	display: block;
+	width: 100%;
+	position: relative;
+	margin-bottom: 30px;
+
+	.custom-label {
+		display: block;
+		margin-bottom: 8px;
+		//@include font-size(0.8rem);
+		//@include margin-bottom(0.4rem);
+    //font-weight: 600;
+	}
+
+	.custom-input {
+		@include font-size(1rem);
+		width: 100%;
+		padding: 0px;
+		border: none;
+
+		+ .hint {
+			display: none;
+		}
+
+		&.ng-invalid + .hint {
+			display: block;
+			@include font-size(0.7rem);
+			color: $primary;
+			margin-top: 8px;
+
+			&:not(:first-of-type) {
+				display: none;
+			}
+		}
+	}
+
+	&::after {
+		content: '';
+		position: relative;
+		display: block;
+		height: 2px;
+		width: 100%;
+		//background: $secondary;
+		transform: scaleX(0);
+		transform-origin: 0%;
+		transition: $transition;
+		top: 2px;
+	}
+
+	&:focus-within::after {
+		transform: scaleX(1);
+	}
+}

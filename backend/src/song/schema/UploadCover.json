@@ -1,0 +1,14 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "UploadCover",
+	"type": "object",
+	"properties": {
+		"songID": {
+			"type": "string"
+		},
+		"file": {
+			"type": "string"
+		}
+	},
+	"required": ["songID", "file"]
+}

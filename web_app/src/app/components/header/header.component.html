@@ -1,0 +1,204 @@
+<div class="header">
+	<nav class="container container-desktop">
+
+		<div class="left-menu">
+
+			<div class="mobile-only mobile-title">{{ navigationTitle | async }}</div>
+
+			<img
+				*ngIf="(getCurrentScreen !== 'mobile') || ((navigationTitle | async) === '')"
+				id="logo-desktop"
+				class="pointer logo"
+				src="../../../assets/logo-white.svg"
+				alt="logo"
+				routerLink="/demoplayer"
+			/>
+			<div class="links">
+				<a
+					*ngIf="!(user$ | async).loggedIn"
+					href="https://democharts.org/">for artists</a>
+
+				<a
+					*ngIf="!(user$ | async).loggedIn"
+					href="https://democharts.org/experts">for experts</a>
+			</div>
+		</div>
+
+
+		<div class="links" *ngIf="!(user$ | async).loggedIn">
+			<a routerLink="/login" routerLinkActive="active">login</a>
+			<a href="https://democharts.org/apply">apply</a>
+		</div>
+
+		<div class="links loggedIn" *ngIf="(user$ | async).loggedIn">
+			<a
+				*ngIf="isArtist | async"
+				routerLink="/upload"
+				routerLinkActive="active"
+			>upload demo</a
+			>
+			<a
+				*ngIf="isArtist | async"
+				routerLink="/mydemos"
+				routerLinkActive="active"
+			>my demos</a
+			>
+			<a
+				*ngIf="isExpert | async"
+				routerLink="/charts"
+				routerLinkActive="active"
+			>charts</a
+			>
+			<a
+				*ngIf="isExpert | async"
+				routerLink="/demoplayer"
+				routerLinkActive="active"
+			>demoplayer</a>
+
+			<a routerLink="/messages" routerLinkActive="active" class="message-container">messages <div *ngIf="unreadChatsCounted > 0" class="unreadCounter">{{ unreadChatsCounted }}</div></a>
+
+			<a
+				*ngIf="isExpert | async "
+				routerLink="/favorites"
+				routerLinkActive="active"
+			>saved</a
+			>
+
+			<div class="invitations-left-container" (click)="referToFriend()" >
+				<app-image-gift style="margin-right: 8px"></app-image-gift>
+				<span>INVITES LEFT (2)</span>
+			</div>
+
+
+			<div class="profile-popup-container">
+				<img [src]="(profileImgSrc | async) || '../../../assets/default-avatar.svg'" class="profile-img"
+						 (click)="openProfilePopup()"
+						 #profileImage  />
+				<div [hidden]="!isProfilePopupActive" class="profile-popup" #profilePopup>
+
+					<a routerLink="/profile" routerLinkActive="active">profile</a>
+
+
+					<a
+						(click)="sendFeedback()"
+					>Feedback</a>
+
+					<a
+						(click)="sendSupport()"
+					>Support</a>
+
+					<a
+						routerLink="/settings"
+						routerLinkActive="active"
+					>settings</a>
+
+					<a
+						(click)="signOut()"
+					>logout</a>
+
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="mobile-icons mobile-only flex">
+			<div *ngIf="showEditProfile" class="mobile-nav-icon">
+				<button
+					button-icon
+					[routerLink]="'/settings'"
+					class="small icon-only solid-neutral"
+				>
+					<app-icon-settings class="icon-24"></app-icon-settings>
+				</button>
+			</div>
+
+			<div *ngIf="router.url === '/demoplayer'" class="mobile-nav-icon">
+				<button
+					button-icon
+					(click)="eventBus.cast('navigation:onReportSongClicked')"
+					class="small icon-only solid-neutral"
+				>
+					<app-icon-flag></app-icon-flag>
+				</button>
+			</div>
+
+			<div *ngIf="router.url === '/demoplayer'" class="mobile-nav-icon">
+				<button
+					button-icon
+					class="small solid"
+					(click)="eventBus.cast('navigation:onFilterClicked');"
+				>
+					<app-icon-filter></app-icon-filter>
+					Filter
+				</button>
+			</div>
+
+			<div *ngIf="router.url !== '/demoplayer'" class="mobile-nav-icon" (click)="open(origin, hamburger)" #origin>
+				<app-icon-more-options></app-icon-more-options>
+			</div>
+		</div>
+
+		<ng-template #hamburger>
+			<div
+				id="linksMobile"
+				*ngIf="(user$ | async).loggedIn"
+				(click)="close()"
+			>
+				<a routerLink="/profile" routerLinkActive="active">profile</a>
+				<!--			<a routerLink="/messages" routerLinkActive="active">messages</a>-->
+				<a
+					*ngIf="isArtist | async"
+					routerLink="/mydemos"
+					routerLinkActive="active"
+				>my demos</a
+				>
+				<a
+					*ngIf="isArtist | async"
+					routerLink="/upload"
+					routerLinkActive="active"
+				>upload demo</a
+				>
+				<!--			<a-->
+				<!--				*ngIf="isExpert | async"-->
+				<!--				routerLink="/charts"-->
+				<!--				routerLinkActive="active"-->
+				<!--				>charts</a-->
+				<!--			>-->
+				<!--			<a-->
+				<!--				*ngIf="isExpert | async"-->
+				<!--				routerLink="/demoplayer"-->
+				<!--				routerLinkActive="active"-->
+				<!--				>demoplayer</a-->
+				<!--			>-->
+				<a
+					routerLink="/settings"
+					routerLinkActive="active"
+				>settings</a
+				>
+				<a
+					(click)="signOut()"
+				>logout</a
+				>
+			</div>
+
+			<div
+				id="linksMobile"
+				*ngIf="!(user$ | async).loggedIn"
+				(click)="close()"
+			>
+
+				<a
+					*ngIf="!(user$ | async).loggedIn"
+					href="https://democharts.org/">for artists</a>
+
+				<a
+					*ngIf="!(user$ | async).loggedIn"
+					href="https://democharts.org/experts">for experts</a>
+
+				<a href="https://democharts.org/apply">apply</a>
+				<a routerLink="/login" routerLinkActive="active">login</a>
+			</div>
+		</ng-template>
+	</nav>
+</div>

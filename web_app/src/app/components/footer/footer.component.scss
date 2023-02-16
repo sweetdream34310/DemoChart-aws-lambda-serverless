@@ -1,0 +1,11 @@
+@import 'variables';
+
+footer {
+	height: $footerHeightMobile;
+}
+
+@media (min-width: $md) {
+	footer {
+		height: $footerHeight;
+	}
+}

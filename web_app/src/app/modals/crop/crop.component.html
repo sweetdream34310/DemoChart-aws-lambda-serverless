@@ -1,0 +1,30 @@
+<h3 modal-title>Upload an Image</h3>
+
+<div modal-content>
+	<image-cropper
+		[imageChangedEvent]="imageChangedEvent"
+		[maintainAspectRatio]="true"
+		format="png"
+		[autoCrop]="false"
+		(loadImageFailed)="loadImageFailed()"
+		(cropperReady)="cropperReady = true"
+	></image-cropper>
+</div>
+
+<div modal-actions *ngIf="!cropperReady">
+	<button button-accent class="w100" (click)="fileInput.click()">
+		<span>select</span>
+		<input
+			#fileInput
+			type="file"
+			accept=".png, .jpg, .jpeg, .PNG, .JPG, .JPEG"
+			(change)="imageChangedEvent = $event"
+			style="display: none"
+		/>
+	</button>
+</div>
+
+<div modal-actions *ngIf="cropperReady">
+	<button button-sec modal-close>cancel</button>
+	<button button-accent (click)="crop()">upload</button>
+</div>

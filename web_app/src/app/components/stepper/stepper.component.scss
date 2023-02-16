@@ -1,0 +1,48 @@
+@import 'variables';
+@import 'colors';
+@import '~rfs/scss';
+
+#stepper {
+	height: 100%;
+	flex-direction: column;
+}
+
+.menu-container {
+	width: 100%;
+	background: $background-default;
+}
+
+#header {
+	display: none;
+	align-items: center;
+	justify-content: space-evenly;
+	padding: 2rem 0;
+
+	@media (min-width: $md) {
+		display: flex;
+	}
+
+	.step {
+		@include font-size(1rem);
+		background-color: transparent;
+		border: none;
+		color: $txt-default;
+		text-transform: uppercase;
+		border-radius: $borderRadius;
+		padding: 1rem 1rem;
+		letter-spacing: 2px;
+	}
+
+	.active {
+		border-bottom: 2px solid $primary;
+		border-radius: 0;
+	}
+	.completed {
+		color: $primary;
+		// cursor: pointer;
+
+		// &:hover {
+		// 	background-color: $transparentBg;
+		// }
+	}
+}

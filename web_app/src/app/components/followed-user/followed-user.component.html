@@ -1,0 +1,27 @@
+<div
+	[routerLink]="['/profile', followed.followed.slug]"
+	class="profile-item pointer"
+>
+	<img
+		[src]="(followed.followed.profileImageSrc && getProfileImage(followed.followed.profileImageSrc)) || '../../../assets/default-avatar.svg'"
+		class="profile-img"
+	/>
+	<h2 class="profile-name">{{followed.followed.artistName ? followed.followed.artistName : (followed.followed.firstName + " " + followed.followed.lastName)}}</h2>
+	<div class="profile-desc">
+		<div>{{ followed.followed.jobTitle ? followed.followed.jobTitle : '-'}}</div>
+		<div>{{ country }}</div>
+	</div>
+	<div class="profile-cta">
+		<app-icon-heart
+			class="icon-link"
+			[isActive]="true"
+			(click)="unmarkArtist($event)">
+		</app-icon-heart>
+
+		<app-icon-chat
+			style="margin-left: 8px"
+			class="icon-link"
+			(click)="goToChat($event)"
+		></app-icon-chat>
+	</div>
+</div>

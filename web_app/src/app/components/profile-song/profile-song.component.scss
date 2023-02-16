@@ -1,0 +1,71 @@
+@import "colors";
+@import "variables";
+
+.demo {
+	display: flex;
+	margin-bottom: 1rem;
+	padding: 0rem;
+
+	background-color: $background-item;
+	border-radius: $borderRadius;
+
+	&:hover, &.active {
+		background-color: $background-item-hover;
+	}
+
+	.demo-content-container {
+		padding: 1rem;
+	}
+
+	.song-image {
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+	.song-image-hover {
+		filter: brightness(0.5);
+	}
+
+	.play {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 100%;
+		margin: 0.8rem;
+		margin-right: 1rem;
+
+		fa-icon {
+			color: white;
+			margin-top: 1px;
+			font-size: 0.8rem;
+		}
+
+		.playIco {
+			margin-left: 3px;
+			z-index: 10;
+		}
+
+		.pauseIco {
+			z-index: 10;
+		}
+	}
+}
+
+.title {
+	margin-bottom: 0.3rem;
+}
+
+:hover {
+	.title {
+		text-decoration: underline;
+	}
+}

@@ -1,0 +1,37 @@
+
+a {
+	color: $link;
+	display: inline-block;
+
+	transition: transform 100ms ease-in;
+	transform-origin: center;
+
+	&:hover {
+		transform: scale(1.02);
+		//color: $primary;
+	}
+}
+
+.primary {
+	color: $demored;
+}
+
+.secondary {
+	color: $navyblue;
+}
+
+.black {
+	color: $darkblack;
+}
+
+.white {
+	color: white;
+}
+
+.grey {
+	color: $grey;
+}
+
+.error-hint {
+	color: $red;
+}

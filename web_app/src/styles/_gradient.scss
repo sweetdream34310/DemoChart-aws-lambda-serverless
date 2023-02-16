@@ -1,0 +1,38 @@
+
+
+@mixin colorful-mixin {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+
+.colorful {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+//
+//.colorful-on-hover {
+//	animation: gradient 15s ease infinite !important;
+//
+//	&:hover {
+//		color: white !important;
+//		background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important;
+//		background-size: 400% 400% !important;
+//		animation: gradient 15s ease infinite !important;
+//	}
+//}
+
+
+
+@keyframes gradient {
+	0% {
+		background-position: 50% 50%;
+	}
+	50% {
+		background-position: 70% 50%;
+	}
+	100% {
+		background-position: 50% 50%;
+	}
+}

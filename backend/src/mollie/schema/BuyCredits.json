@@ -1,0 +1,14 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "BuyCredits",
+	"type": "object",
+	"properties": {
+		"songID": {
+			"type": "string"
+		},
+		"plan": {
+			"enum": ["monthly", "yearly"]
+		}
+	},
+	"required": ["plan"]
+}

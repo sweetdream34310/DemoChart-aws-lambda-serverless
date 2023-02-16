@@ -1,0 +1,31 @@
+#app {
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+
+button {
+	border: none;
+	background: #f15d5c;
+	border-radius: 5px;
+	padding: 8px;
+	color: white;
+	cursor: pointer;
+	
+	&.disabled {
+		background: #efefef;
+		cursor: not-allowed;
+	}
+
+	&~button {
+		margin-right: 8px;
+	}
+}
+
+input {
+	display: block;
+	padding: 8px;
+	border: 1px solid #9f9f9f;
+	margin-bottom: 4px !important;
+	border-radius: 4px;
+	min-width: 300px;
+}

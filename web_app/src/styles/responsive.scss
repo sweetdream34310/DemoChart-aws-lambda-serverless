@@ -1,0 +1,29 @@
+
+/**
+ * Main breakpoints
+ * if you change or add any breakpoints here, also change them in DeviceDimensions.js!
+ */
+$breakpointLaptop: 1024px;
+$breakpointTablet: 900px;
+$breakpointMobile: 750px;
+
+@mixin respondTo ($breakpoint) {
+
+	@if $breakpoint==laptop {
+		@media (max-width: $breakpointLaptop) {
+			@content;
+		}
+	}
+
+	@if $breakpoint==tablet {
+		@media (max-width: $breakpointTablet) {
+			@content;
+		}
+	}
+
+	@if $breakpoint==mobile {
+		@media (max-width: $breakpointMobile) {
+			@content;
+		}
+	}
+}

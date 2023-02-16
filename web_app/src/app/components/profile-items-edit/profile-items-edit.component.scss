@@ -1,0 +1,51 @@
+@import "colors";
+@import 'variables';
+@import '~rfs/scss';
+@import 'responsive';
+
+
+.items {
+	background: $background-item;
+	padding: 12px 24px;
+	border-radius: 5px;
+	align-items: center;
+}
+.items > div {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.row {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+
+	@media (min-width: $md) {
+		flex-direction: row;
+	}
+
+	& > * {
+		flex: 1;
+
+		&:not(:last-child) {
+			margin-right: 1rem;
+
+			@include respondTo(mobile){
+				margin-right: 0;
+			}
+		}
+
+	}
+}
+
+.custom-input {
+	padding: 16px 16px;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+.custom-input.select {
+	width: unset;
+	padding: 0;
+	display: block;
+}

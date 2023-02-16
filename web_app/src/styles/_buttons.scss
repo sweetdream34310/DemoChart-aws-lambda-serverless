@@ -1,0 +1,18 @@
+.button-text {
+	background: none;
+	border: 3px solid transparent;
+	padding: 16px;
+	/* background: white; */
+	border-radius: 4px;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+
+	.button-icon {
+		padding-right: 0.4rem;
+	}
+}
+
+.button-text:hover {
+	border: 3px solid white;
+}

@@ -1,0 +1,13 @@
+topol.io
+export als html
+dann das machen:
+https://github.com/amazon-archives/amazon-cognito-identity-js/issues/446
+
+Ran into this issue recently while trying to use custom HTML in the CustomMessage trigger. For me, the problem turned out to be Unicode U+00A0 (No-Break Space).
+
+I did not need to URL encode the HTML. Stripping this character from the html resolved the error.
+html = html.replace(/\u00A0/g, '');
+
+I used the MJML demo page to generate my email HTML, so am not sure why this particular character is generated for some templates and not others.
+
+Hopefully, this helps others googling this issue.

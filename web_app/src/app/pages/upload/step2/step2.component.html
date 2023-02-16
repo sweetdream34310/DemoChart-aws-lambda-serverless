@@ -1,0 +1,58 @@
+<div class="uploadWrapper container">
+	<div *ngIf="!loading; else progressBar" class="w100">
+		<div class="relative">
+			<input
+				id="title"
+				class="blur"
+				[formControl]="title"
+				type="text"
+				placeholder="type in demo title"
+			/>
+			<span *ngIf="submitted && title.invalid" class="hint">
+				Please add a title and ensure its no too long
+			</span>
+		</div>
+
+		<div class="label">
+			Move the orange box to choose the best minute from your demo
+		</div>
+
+		<div id="waveformWrapper">
+			<button id="play" (click)="togglePlay()">
+				<fa-icon
+					*ngIf="!(playing | async); else playPause"
+					class="playIco"
+					[icon]="faPlay"
+				></fa-icon>
+				<ng-template #playPause>
+					<fa-icon [icon]="faPause"></fa-icon>
+				</ng-template>
+			</button>
+
+			<app-waveform
+				*ngIf="demoFull$ | async as file"
+				#waveform
+				[file]="file"
+				[selectable]="true"
+				class="w-100"
+			></app-waveform>
+		</div>
+
+		<div class="flex ac je">
+			<button class="button-text next" (click)="encode()">
+				next <span class="red">>></span>
+			</button>
+		</div>
+	</div>
+
+	<ng-template #progressBar>
+		<div id="progressBar" class="w100 blur">
+			<div class="blur" [style.width.%]="progress"></div>
+		</div>
+
+		<div class="center">
+			Your demo is being processed and uploaded. This could take a couple
+			of seconds, please stand by
+		</div>
+	</ng-template>
+</div>

@@ -1,0 +1,11 @@
+<div class="popup-wrapper"
+		 (click)="onSelect.emit(undefined)"
+>
+</div>
+
+<div class="dropdown">
+	<div *ngFor="let item of items"
+			 class="item"
+			 (click)="onSelect.emit(item)"
+	>{{ labelFunction(item) }}</div>
+</div>

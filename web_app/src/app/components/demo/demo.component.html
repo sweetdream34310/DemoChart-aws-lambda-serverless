@@ -1,0 +1,103 @@
+<app-mydemo-box [isDisabled]="(demo.date | remainingTime: 31) <= 0">
+	<div
+		class="demo"
+		[ngClass]="{ expired: (demo.date | remainingTime: 31) <= 0 }"
+	>
+<!--		<div class="expiredMark"> </div>-->
+
+		<div class="base-information-outer-container">
+			<img
+				[src]="demo.coverSrc"
+				alt="cover"
+				class="cover"
+				(error)="demo.coverSrc = '../../../assets/cover_placeholder.jpg'"
+			/>
+
+			<div class="base-information">
+				<h2 class="demo-title">{{ demo.title }}</h2>
+				<div class="info">
+					<div class="col flex je general">
+						<div>
+							<h3>
+								{{ demo.genreID | labelSearch: 'genres' | async }}
+							</h3>
+						</div>
+						<div class="remaining">
+							{{ demo.date | remainingTime: songRemainingDays }} days remaining
+						</div>
+					</div>
+				</div>
+
+				<div class="play" (click)="play(demo)">
+					<fa-icon
+						*ngIf="!(playingUid === demo.uid)"
+						class="playIco"
+						[icon]="faPlay"
+						size="sm"
+					></fa-icon>
+					<fa-icon
+						*ngIf="playingUid === demo.uid"
+						class="pauseIco"
+						[icon]="faPause"
+						size="sm"
+					></fa-icon>
+				</div>
+			</div>
+		</div>
+
+		<div class="info-box">
+
+			<div>
+				<div class="chart-label">Playtime</div>
+
+				<div class="chart-background">
+					<div class="chart-progress" [style.width.%]="(demo.date | uploadedSince) > songDetailsHoursBlocked ? ((demo.avgPlaytime || 0) / 60) * 100 : 0">
+						<!--							<div class="chart-overlay">Playtime</div>-->
+					</div>
+				</div>
+
+				<div class="chart-label">Rating</div>
+				<div class="chart-background">
+					<div class="chart-progress primary" [style.width.%]="(demo.date | uploadedSince) > songDetailsHoursBlocked ? demo.rating*10 : 0">
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col details" *ngIf="(demo.date | uploadedSince) > songDetailsHoursBlocked">
+				<div class="detail-item">
+					<div class="detail-title">Total-Ratings</div>
+					<div class="detail-value">{{ demo.totalPlays | number: '1.0-0' }}</div>
+				</div>
+
+				<div class="detail-item">
+					<div class="detail-title">Avg. Playtime (sec)</div>
+					<div class="detail-value">{{ demo.avgPlaytime > 0 ? (demo.avgPlaytime | number: '1.0-0') : '-' }}</div>
+				</div>
+
+				<div class="detail-item">
+					<div class="detail-title">Chart Position</div>
+					<div class="detail-value">{{ demo.chartPosition }}</div>
+				</div>
+
+				<div class="detail-item">
+					<div class="detail-title">Rating</div>
+					<div class="detail-value">{{ demo.rating | number: '1.0-0' }}</div>
+				</div>
+			</div>
+
+			<div class="col details" *ngIf="(demo.date | uploadedSince) <= 24">
+				Your demo is currently being listened to. you will get a result after 24 hours
+			</div>
+
+		</div>
+
+
+		<fa-icon
+			[icon]="faTrash"
+			class="delete"
+			(click)="deleteSong(demo.uid)"
+		></fa-icon>
+	</div>
+
+</app-mydemo-box>

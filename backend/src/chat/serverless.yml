@@ -1,0 +1,158 @@
+org: juliprop
+app: democharts
+service: backend-chat
+
+plugins:
+    - serverless-webpack
+    - serverless-iam-roles-per-function
+    - serverless-domain-manager
+
+provider:
+    name: aws
+    runtime: nodejs14.x
+    stage: ${opt:stage,'dev'}
+    region: eu-central-1
+    environment: ${file(../shared/globalYmls/env.yml)}
+
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - dynamodb:PutItem
+              - dynamodb:GetItem
+              - dynamodb:Query
+              - dynamodb:UpdateItem
+              - dynamodb:BatchWriteItem
+          Resource:
+              - ${output::${self:provider.stage}::backend-dynamoDb.dbArn}
+              - ${output::${self:provider.stage}::backend-dynamoDb.dbArn}/index/*
+
+        - Effect: 'Allow'
+          Action:
+              - execute-api:Invoke
+          Resource:
+              - arn:aws:execute-api:${self:provider.region}:*:**/@connections/*
+
+    websocketApiName: websocket-chat-${self:provider.stage}
+    websocketApiRouteSelectionExpression: $request.body.action
+    logs:
+        websocket: true
+
+functions:
+    # creates a chatroom in the DB
+    createChat:
+        handler: srcCreateChat.handler
+        events:
+            - http:
+                  path: createChat
+                  method: post
+                  cors: true
+                  integration: lambda
+                  request:
+                      passThrough: NEVER
+                      schema:
+                          'application/json': ${file(schema/createChat.json)}
+                  response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # gets all of the suers chats
+    getChats:
+        handler: srcGetChats.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        events:
+            - http:
+                  path: getChats
+                  method: get
+                  cors: true
+                  integration: lambda
+                  authorizer: ${self:custom.globals.authorizer}
+
+    # authenticator for the websocket
+    authenticator:
+        handler: srcAuthenticator.handler
+        environment:
+            USERPOOL_ID: ${output::${self:provider.stage}::backend-userpool.Id}
+            USERPOOL_CLIENT_ID: ${output::${self:provider.stage}::backend-userpool.WebAppClientId}
+
+    # websocket connect route
+    connect:
+        handler: srcConnect.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        events:
+            - websocket:
+                  route: $connect
+                  authorizer:
+                      name: authenticator
+                      identitySource:
+                          - 'route.request.querystring.Authorizer'
+
+    # websocket disconnect route
+    disconnect:
+        handler: srcDisconnect.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        events:
+            - websocket:
+                  route: $disconnect
+
+    # websocket default route. Does not do much. Is there so default connections don't return an error
+    default:
+        handler: srcDefault.handler
+        events:
+            - websocket:
+                  route: $default
+
+    # websocket send route. Used to persist chat messages in DB.
+    send:
+        timeout: 15
+        handler: srcSend.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        events:
+            - websocket:
+                  route: send
+
+    # triggered by the dynamoDB stream. Sends out the message to all conencted clients.
+    distributeMsgs:
+        handler: srcDistributeMsgs.handler
+        vpc: ${file(../shared/globalYmls/vpc.yml)}
+        events:
+            - stream: ${output::${self:provider.stage}::backend-dynamoDb.streamArn}
+
+
+    getUnreadChats:
+      handler: srcGetUnreadChats.handler
+      vpc: ${file(../shared/globalYmls/vpc.yml)}
+      events:
+        - http:
+            path: getUnreadChats
+            method: get
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+            authorizer: ${self:custom.globals.authorizer}
+
+
+    markAsReadChat:
+      handler: srcMarkAsReadChat.handler
+      vpc: ${file(../shared/globalYmls/vpc.yml)}
+      events:
+        - http:
+            path: markAsReadChat
+            method: post
+            cors: true
+            integration: lambda
+            response: ${file(../shared/globalYmls/customErrorTemplate.yml)}
+            authorizer: ${self:custom.globals.authorizer}
+
+
+custom:
+    globals: ${file(../shared/globalYmls/globals.yml):${self:provider.stage}}
+    basePath: chat
+    customDomain:
+        rest: ${file(../shared/globalYmls/domain.yml)}
+        websocket:
+            domainName: ${self:custom.globals.websocketDomain}
+            stage: ${self:provider.stage}
+            createRoute53Record: true
+            endpointType: 'regional'
+            autoDomain: true
+    webpack:
+        webpackConfig: '../../webpack.config.js'

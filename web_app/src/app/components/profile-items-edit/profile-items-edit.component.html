@@ -1,0 +1,73 @@
+<div class="container">
+
+	<div *ngFor="let item of filteredItems">
+		<div class="row items">
+			<div>{{ item.header }}</div>
+			<div>{{ item.description }}</div>
+			<div>{{ item.dateString }}</div>
+			<div>{{ item.link }}</div>
+			<fa-icon
+				class="pointer"
+				style="flex: 0"
+				[icon]="faTrash"
+				(click)="remove(item)"
+			></fa-icon>
+		</div>
+	</div>
+
+	<form [formGroup]="addProfileListItem">
+		<div class="row">
+			<app-form-field>
+				<label class="custom-label" for="header_control">{{ title }}</label>
+				<input
+					class="custom-input"
+					type="text"
+					formControlName="header"
+					required
+				/>
+				<span *ngIf="showInputHint" class="hint"
+				>Field is required</span
+				>
+			</app-form-field>
+
+			<app-form-field>
+				<label class="custom-label" for="description">Description</label>
+				<input
+					class="custom-input"
+					type="text"
+					formControlName="description"
+					required
+				/>
+				<span *ngIf="showInputHint" class="hint"
+				>Field is required</span
+				>
+			</app-form-field>
+			<app-form-field>
+				<label class="custom-label" for="dateString">Date</label>
+				<input
+					class="custom-input"
+					type="text"
+					formControlName="dateString"
+					required
+				/>
+				<span *ngIf="showInputHint" class="hint"
+				>Field is required</span
+				>
+			</app-form-field>
+
+			<app-form-field>
+				<label class="custom-label" for="link">Link</label>
+				<input
+					class="custom-input"
+					type="text"
+					formControlName="link"
+				/>
+				<span *ngIf="showInputHint" class="hint"
+				>Field is required</span
+				>
+			</app-form-field>
+		</div>
+	</form>
+
+	<button button-accent (click)="add()">Add</button>
+</div>
